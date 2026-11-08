@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gpcheck"
+version = "0.1.0"
+description = "Measure whether websites honor the Global Privacy Control (GPC) opt-out signal"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "playwright>=1.45",
+  "tldextract>=5.1",
+  "duckdb>=1.0",
+  "pandas>=2.0",
+  "scipy>=1.11",
+  "typer>=0.12",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+gpcheck = "gpcheck.cli:app"
+
+[tool.setuptools.packages.find]
+include = ["gpcheck*"]
+
+[tool.setuptools.package-data]
+gpcheck = ["data/*.json", "data/*.txt"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

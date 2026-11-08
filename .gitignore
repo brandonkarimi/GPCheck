@@ -1,0 +1,9 @@
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.venv/
+results/
+*.duckdb
+data/lists/*.json
+data/lists/*.csv
+data/sites/tranco*.csv

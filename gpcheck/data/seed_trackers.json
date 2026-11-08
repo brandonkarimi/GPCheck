@@ -1,0 +1,398 @@
+{
+ "_comment": "Small bundled seed list so GPCheck works offline. For real studies, add DuckDuckGo Tracker Radar (gpcheck lists fetch). Domains under 'trackers' count as trackers; 'domains' define organization ownership.",
+ "entities": {
+  "Google": {
+   "categories": [
+    "Advertising",
+    "Analytics"
+   ],
+   "domains": [
+    "google.com",
+    "googleapis.com",
+    "gstatic.com",
+    "youtube.com",
+    "ytimg.com",
+    "doubleclick.net",
+    "google-analytics.com",
+    "googletagmanager.com",
+    "googlesyndication.com",
+    "googleadservices.com",
+    "2mdn.net",
+    "googletagservices.com",
+    "app-measurement.com"
+   ],
+   "trackers": [
+    "doubleclick.net",
+    "google-analytics.com",
+    "googletagmanager.com",
+    "googlesyndication.com",
+    "googleadservices.com",
+    "2mdn.net",
+    "googletagservices.com",
+    "app-measurement.com",
+    "pagead2.googlesyndication.com"
+   ]
+  },
+  "Meta": {
+   "categories": [
+    "Advertising",
+    "Social"
+   ],
+   "domains": [
+    "facebook.com",
+    "facebook.net",
+    "fbcdn.net",
+    "instagram.com",
+    "messenger.com",
+    "whatsapp.com"
+   ],
+   "trackers": [
+    "facebook.net",
+    "connect.facebook.net",
+    "www.facebook.com"
+   ]
+  },
+  "Microsoft": {
+   "categories": [
+    "Advertising",
+    "Analytics"
+   ],
+   "domains": [
+    "microsoft.com",
+    "bing.com",
+    "clarity.ms",
+    "live.com",
+    "msn.com",
+    "linkedin.com",
+    "licdn.com"
+   ],
+   "trackers": [
+    "bat.bing.com",
+    "clarity.ms",
+    "px.ads.linkedin.com",
+    "snap.licdn.com",
+    "ads.linkedin.com"
+   ]
+  },
+  "Amazon": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "amazon.com",
+    "amazon-adsystem.com",
+    "media-amazon.com",
+    "ssl-images-amazon.com"
+   ],
+   "trackers": [
+    "amazon-adsystem.com"
+   ]
+  },
+  "ByteDance": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "tiktok.com",
+    "tiktokcdn.com",
+    "byteoversea.com"
+   ],
+   "trackers": [
+    "analytics.tiktok.com"
+   ]
+  },
+  "X Corp": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "twitter.com",
+    "x.com",
+    "ads-twitter.com",
+    "twimg.com"
+   ],
+   "trackers": [
+    "ads-twitter.com",
+    "analytics.twitter.com"
+   ]
+  },
+  "Pinterest": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "pinterest.com",
+    "pinimg.com"
+   ],
+   "trackers": [
+    "ct.pinterest.com"
+   ]
+  },
+  "Reddit": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "reddit.com",
+    "redditstatic.com"
+   ],
+   "trackers": [
+    "alb.reddit.com"
+   ]
+  },
+  "Snap": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "snapchat.com",
+    "sc-static.net"
+   ],
+   "trackers": [
+    "tr.snapchat.com",
+    "sc-static.net"
+   ]
+  },
+  "Adobe": {
+   "categories": [
+    "Analytics",
+    "Advertising"
+   ],
+   "domains": [
+    "adobe.com",
+    "demdex.net",
+    "omtrdc.net",
+    "everesttech.net",
+    "adobedtm.com"
+   ],
+   "trackers": [
+    "demdex.net",
+    "omtrdc.net",
+    "everesttech.net"
+   ]
+  },
+  "Oracle": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "oracle.com",
+    "bluekai.com",
+    "addthis.com",
+    "moatads.com"
+   ],
+   "trackers": [
+    "bluekai.com",
+    "addthis.com",
+    "moatads.com"
+   ]
+  },
+  "Xandr": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "adnxs.com"
+   ],
+   "trackers": [
+    "adnxs.com"
+   ]
+  },
+  "Criteo": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "criteo.com",
+    "criteo.net"
+   ],
+   "trackers": [
+    "criteo.com",
+    "criteo.net"
+   ]
+  },
+  "The Trade Desk": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "adsrvr.org"
+   ],
+   "trackers": [
+    "adsrvr.org"
+   ]
+  },
+  "LiveRamp": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "rlcdn.com",
+    "liveramp.com"
+   ],
+   "trackers": [
+    "rlcdn.com"
+   ]
+  },
+  "Magnite": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "rubiconproject.com"
+   ],
+   "trackers": [
+    "rubiconproject.com"
+   ]
+  },
+  "PubMatic": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "pubmatic.com"
+   ],
+   "trackers": [
+    "pubmatic.com"
+   ]
+  },
+  "OpenX": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "openx.net"
+   ],
+   "trackers": [
+    "openx.net"
+   ]
+  },
+  "Index Exchange": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "casalemedia.com"
+   ],
+   "trackers": [
+    "casalemedia.com"
+   ]
+  },
+  "Taboola": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "taboola.com"
+   ],
+   "trackers": [
+    "taboola.com"
+   ]
+  },
+  "Outbrain": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "outbrain.com"
+   ],
+   "trackers": [
+    "outbrain.com"
+   ]
+  },
+  "comScore": {
+   "categories": [
+    "Analytics"
+   ],
+   "domains": [
+    "scorecardresearch.com",
+    "comscore.com"
+   ],
+   "trackers": [
+    "scorecardresearch.com"
+   ]
+  },
+  "Quantcast": {
+   "categories": [
+    "Advertising",
+    "Analytics"
+   ],
+   "domains": [
+    "quantserve.com",
+    "quantcount.com"
+   ],
+   "trackers": [
+    "quantserve.com",
+    "quantcount.com"
+   ]
+  },
+  "Hotjar": {
+   "categories": [
+    "Analytics"
+   ],
+   "domains": [
+    "hotjar.com"
+   ],
+   "trackers": [
+    "hotjar.com"
+   ]
+  },
+  "Segment": {
+   "categories": [
+    "Analytics"
+   ],
+   "domains": [
+    "segment.com",
+    "segment.io"
+   ],
+   "trackers": [
+    "segment.com",
+    "segment.io"
+   ]
+  },
+  "Mixpanel": {
+   "categories": [
+    "Analytics"
+   ],
+   "domains": [
+    "mixpanel.com"
+   ],
+   "trackers": [
+    "mixpanel.com"
+   ]
+  },
+  "Integral Ad Science": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "adsafeprotected.com"
+   ],
+   "trackers": [
+    "adsafeprotected.com"
+   ]
+  },
+  "DoubleVerify": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "doubleverify.com"
+   ],
+   "trackers": [
+    "doubleverify.com"
+   ]
+  },
+  "Fixture Tracker": {
+   "categories": [
+    "Advertising"
+   ],
+   "domains": [
+    "tracker.test"
+   ],
+   "trackers": [
+    "tracker.test"
+   ]
+  }
+ }
+}

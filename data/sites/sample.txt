@@ -1,0 +1,32 @@
+# Small starter list for a pilot crawl. For the real study, use a Tranco list:
+#   gpcheck lists --tranco 1000   ->  data/sites/tranco_top1000.csv  (then filter to ~500 US sites)
+nytimes.com
+washingtonpost.com
+cnn.com
+foxnews.com
+latimes.com
+sfgate.com
+espn.com
+weather.com
+amazon.com
+walmart.com
+target.com
+bestbuy.com
+homedepot.com
+ebay.com
+etsy.com
+wayfair.com
+macys.com
+sephora.com
+ulta.com
+nike.com
+webmd.com
+healthline.com
+mayoclinic.org
+zillow.com
+realtor.com
+expedia.com
+booking.com
+tripadvisor.com
+yelp.com
+allrecipes.com
