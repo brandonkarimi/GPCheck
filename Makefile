@@ -6,7 +6,7 @@ OUT ?= results/crawl.jsonl
 
 install:
 	pip install -e ".[dev]"
-	python -m playwright install --with-deps chromium
+	python -m playwright install $(if $(filter Linux,$(shell uname -s)),--with-deps,) chromium
 
 test:
 	pytest -q

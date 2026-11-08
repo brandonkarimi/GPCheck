@@ -5,7 +5,10 @@ Checks whether websites honor the Global Privacy Control (GPC) opt-out signal re
 ## Setup
 
 ```bash
-make install
+python3 -m venv .venv
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
+pip install -e ".[dev]"
+python -m playwright install chromium
 ```
 
 ## Usage
