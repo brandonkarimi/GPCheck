@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import math
+import re
 import statistics
 from collections import Counter, defaultdict
 from dataclasses import dataclass
@@ -19,9 +21,49 @@ IGNORED_SCHEMES = ("data:", "blob:", "chrome-extension:", "about:")
 # Requests that fetch code or assets rather than send data; excluded from opt-out propagation.
 ASSET_TYPES = {"script", "stylesheet", "font", "media", "manifest"}
 
+# A visit that reached a bot wall instead of the site says nothing about GPC, so it is excluded.
+BLOCK_STATUS = {401, 403, 429, 503}
+BLOCK_TITLE = re.compile(
+    r"access( to this page has been)? denied|just a moment|attention required|pardon our interruption|"
+    r"robot or human|are you a robot|verify (that )?you are (a )?human|security check|request blocked|"
+    r"unusual traffic|captcha|bot or not", re.I)
+
+
+def blocked_reason(rec: dict) -> str | None:
+    """Why a visit that loaded without error still looks like a block page, or None."""
+    pages = rec.get("pages") or []
+    code = pages[0].get("status") if pages else None
+    if code in BLOCK_STATUS:
+        return f"blocked: homepage returned HTTP {code}"
+    if BLOCK_TITLE.search(rec.get("title") or ""):
+        return f"blocked: challenge page ({(rec.get('title') or '')[:60]!r})"
+    return None
+
+
+def wilson(k: int, n: int, z: float = 1.96) -> tuple[float, float] | None:
+    """Wilson score interval (95% by default) for a proportion k/n."""
+    if not n:
+        return None
+    p = k / n
+    centre = p + z * z / (2 * n)
+    half = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n))
+    denom = 1 + z * z / n
+    return max(0.0, (centre - half) / denom), min(1.0, (centre + half) / denom)
+
+
+def cohen_kappa(pairs: list[tuple[str, str]]) -> float | None:
+    """Agreement between two labelings beyond what chance would give."""
+    n = len(pairs)
+    if not n:
+        return None
+    observed = sum(a == b for a, b in pairs) / n
+    left, right = Counter(a for a, _ in pairs), Counter(b for _, b in pairs)
+    expected = sum(left[k] * right[k] for k in left) / (n * n)
+    return None if expected == 1 else (observed - expected) / (1 - expected)
+
 
 def load_records(path: str | Path) -> list[dict]:
-    return [json.loads(line) for line in Path(path).read_text().splitlines() if line.strip()]
+    return [json.loads(line) for line in Path(path).read_text(encoding="utf-8").splitlines() if line.strip()]
 
 
 @dataclass
@@ -87,9 +129,12 @@ class Classifier:
         tracking_cookies = tracking_keys(rec.get("cookies"))
         new_after_click = tracking_cookies - tracking_keys(rec.get("cookies_pre_action")) if after_click else None
         declared = declared_signals(rec)
+        status, error = rec.get("status"), rec.get("error")
+        if status == "ok" and blocked_reason(rec):
+            status, error = "blocked", blocked_reason(rec)
         return {
             "site": rec["site"], "condition": rec["condition"], "run": rec["run"], "gpc": rec.get("gpc"),
-            "status": rec.get("status"), "error": rec.get("error"), "final_host": site_host,
+            "status": status, "error": error, "final_host": site_host,
             "n_requests": len(rec.get("requests", [])),
             "n_third_party": len(third_party),
             "n_trackers": len(tracker_domains),

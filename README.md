@@ -27,4 +27,23 @@ gpcheck crawl data/sites/sample.txt --vantage TX --out results/tx.jsonl
 gpcheck analyze results/crawl.jsonl results/tx.jsonl
 ```
 
+To compare what sites say with what they do, record each site's opt-out link and privacy policy. The next `gpcheck analyze` adds a "claims vs. measured behavior" section:
+
+```bash
+gpcheck policy data/sites/sample.txt  # writes results/policy.jsonl
+```
+
+To break verdicts down by site category, pass a `site,category` CSV:
+
+```bash
+gpcheck analyze --categories data/sites/sample_categories.csv
+```
+
+To validate the automated verdicts by hand, draw a random sample, fill in the `manual_verdict` column while checking each site in a GPC-enabled browser, then feed the sheet back in. The report gains an agreement rate and Cohen's kappa:
+
+```bash
+gpcheck sample --n 20                 # writes results/manual_check.csv
+gpcheck analyze --manual results/manual_check.csv
+```
+
 How it works: [docs/METHODOLOGY.md](docs/METHODOLOGY.md)

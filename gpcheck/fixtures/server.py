@@ -8,6 +8,7 @@ All hosts end in `.test` and resolve to 127.0.0.1 via Chromium's --host-resolver
                    and does not pass the opt-out to the tracker
   passes.test      keeps the tracker, but passes the opt-out to it (us_privacy=1YYN on the beacon)
   clean.test       never tracks
+  blocked.test     bot wall: every page is an HTTP 403 'Access Denied'
   banner-ok.test   cookie banner; tracker loads only after 'Accept all'
   banner-bad.test  cookie banner; tracker loads no matter what you click
   echo.test        reports whether GPC reached the page, a subresource and a cross-site iframe
@@ -56,11 +57,37 @@ BANNER = """
 </script>"""
 
 
-def page(title: str, body: str, port: int) -> str:
+FILLER = ("We collect information you give us and information about how you use this site. "
+          "California residents have rights under the CCPA, including the right to opt out. ") * 12
+# What each fixture's privacy policy says about GPC, and whether its footer has an opt-out link.
+POLICIES = {
+    "honors.test": ("We honor the Global Privacy Control signal as a valid request to opt out.", True),
+    "liar.test": ("Our site recognizes Global Privacy Control (GPC) signals and treats them as an opt-out.", True),
+    "passes.test": ("We do not currently respond to Global Privacy Control signals.", True),
+    "ignores.test": ("You may contact us to exercise your rights.", False),
+}
+EXPECTED_POLICY = {
+    "honors.test": ("claims_to_honor_gpc", "claim_matches_behavior"),
+    "liar.test": ("claims_to_honor_gpc", "claims_but_does_not_honor"),
+    "passes.test": ("says_gpc_not_honored", "no_claim_and_does_not_honor"),
+    "ignores.test": ("no_gpc_mention", "no_claim_and_does_not_honor"),
+    "clean.test": ("policy_not_found", None),
+}
+
+
+def page(title: str, body: str, port: int, host: str = "", policy: bool = False) -> str:
     links = "".join(f'<li><a href="/{p}">{p}</a></li>' for p in ("about", "products", "news"))
+    footer = ""
+    if host in POLICIES:
+        footer = '<footer><a href="/privacy">Privacy Policy</a>'
+        if POLICIES[host][1]:
+            footer += ' <a href="/optout">Do Not Sell or Share My Personal Information</a>'
+        footer += "</footer>"
+        if policy:
+            body += f"<p>{FILLER}</p><p>{POLICIES[host][0]}</p>"
     return (f"<!doctype html><html><head><title>{title}</title></head><body>"
             f"<h1>{title}</h1><ul>{links}<li><a href=\"/login\">login</a></li></ul>"
-            f"<div style=\"height:3000px\"></div>{body}</body></html>").replace("{port}", str(port))
+            f"<div style=\"height:3000px\"></div>{body}{footer}</body></html>").replace("{port}", str(port))
 
 
 def site_body(host: str, gpc_header: bool, port: int) -> str | None:
@@ -135,6 +162,9 @@ class Handler(BaseHTTPRequestHandler):
                   "navigator: navigator.globalPrivacyControl === true}, '*');")
             return self._send(f"<!doctype html><script>{js}</script>")
 
+        if host == "blocked.test":
+            return self._send("<!doctype html><title>Access Denied</title><h1>Access Denied</h1>", status=403)
+
         if path == "/.well-known/gpc.json":
             if host == "honors.test":
                 return self._send(json.dumps({"gpc": True, "lastUpdate": "2026-01-01"}), "application/json")
@@ -143,7 +173,7 @@ class Handler(BaseHTTPRequestHandler):
         body = site_body(host, gpc, port)
         if body is None:
             return self._send("unknown fixture host", "text/plain", 404)
-        return self._send(page(f"{host} {path}", body, port))
+        return self._send(page(f"{host} {path}", body, port, host, policy=path == "/privacy"))
 
 
 class FixtureServer:
@@ -173,6 +203,7 @@ EXPECTED_GPC = {
     "liar.test": "declares_only",
     "passes.test": "declares_only",
     "clean.test": "no_tracking_baseline",
+    "blocked.test": "inconclusive",
 }
 EXPECTED_PROPAGATION = {
     "passes.test": "all_requests_carry_optout",

@@ -35,7 +35,7 @@ A GPC-enabled browser does two things, and GPCheck reproduces both:
 For each site and run:
 
 1. Open a fresh, empty browser context. No cookies or storage carry over.
-2. Load the homepage, wait for the network to settle, then dwell for 15 seconds while scrolling, so lazy-loaded tags fire.
+2. Load the homepage (waiting up to 15 seconds for the `load` event, but not requiring it, since ad-heavy pages can take longer), wait for the network to settle, then dwell for 15 seconds while scrolling, so lazy-loaded tags fire.
 3. Visit up to two internal links with the same dwell. Every condition in a run uses the same links.
 4. Record:
    - every request (URL, type, frame, `Sec-GPC` header, page index);
@@ -79,8 +79,12 @@ For each site, the median over runs is taken of the distinct tracker domains and
 | `no_tracking_baseline` | no trackers or tracking cookies even with GPC off |
 | `inconclusive` | visits failed or were blocked |
 
+A visit counts as **blocked**, and is excluded like a failed visit, when the homepage returns HTTP 401, 403, 429 or 503, or when the page title matches a known bot-challenge page ("Access Denied", "Just a moment...", and similar). Without this, a bot wall served under both conditions would look like a site with no trackers.
+
 Across sites, the analysis also reports:
 
+- a 95% Wilson score interval on each verdict share;
+- the verdict mix per site category, when a `site,category` file is supplied;
 - a one-sided Wilcoxon signed-rank test on the paired tracker and cookie counts;
 - an exact McNemar test on whether any tracker loads at all;
 - a per-vendor persistence rate: the share of sites where a vendor still loads with GPC on.
@@ -96,20 +100,38 @@ A site can honor GPC on the page and still send full tracking events to its vend
 
 GPP strings (`gpp`, `gpp_sid`) and event names (for example `ev=Purchase`) are recorded as well. Each site gets a propagation verdict: `all_requests_carry_optout`, `some_requests_carry_optout` or `no_optout_passed`. The report also gives a per-vendor share of requests that carried the opt-out.
 
+## Policy claims vs. measured behavior
+
+`gpcheck policy` visits each site once, with GPC off, and records two things a consumer could rely on:
+
+- **Opt-out link:** a "Do Not Sell or Share My Personal Information" or "Your Privacy Choices" link (Cal. Civ. Code §1798.135(a), 11 CCR §7015) on the homepage or the policy page.
+- **Policy claim:** the privacy policy is located from the homepage links, and every sentence mentioning Global Privacy Control or an "opt-out preference signal" is classified as a commitment to honor it, a statement that it is not honored, or a bare mention. The sentence is kept as evidence.
+
+Each site's claim is then joined to its measured verdict:
+
+| Label | Policy | Measured |
+|---|---|---|
+| `claims_but_does_not_honor` | says GPC is honored | tracking does not drop |
+| `claim_matches_behavior` | says GPC is honored | tracking drops |
+| `no_claim_and_does_not_honor` | no commitment | tracking does not drop |
+| `honors_without_claiming` | no commitment | tracking drops |
+
+The first row is the policy-relevant one: a public statement that is contradicted by observed behavior is the pattern behind California's Sephora (2022) and Healthline (2025) enforcement actions. The report also lists sites that neither reduce tracking under GPC nor show an opt-out link. The text classifier is keyword-based, so every flagged sentence should be read by hand before a site is named.
+
 ## Vantage points (multi-state comparison)
 
 Each crawl is labeled with its vantage point (`gpcheck crawl --vantage CO`). At the start of a crawl, the machine's city, region and country are looked up and stored; the IP address is not stored. Running the same site list from California, from another state with an opt-out-signal law (e.g. Colorado, Texas), and from a state without one tests whether sites honor GPC only where they are legally required to. `gpcheck analyze` accepts several crawl files and reports the verdict mix per vantage point, plus the sites whose verdict changes between them.
 
 ## Validation
 
-- **Test sites:** local fixture sites with known behavior (honors, ignores, declares but still tracks, never tracks, a working banner, a broken banner). `gpcheck selftest` crawls them and checks every verdict.
-- **Manual check:** a random sample of real sites is also inspected by hand in a GPC-enabled browser, to estimate the precision of the automated verdicts.
+- **Test sites:** local fixture sites with known behavior (honors, ignores, declares but still tracks, never tracks, a bot wall, a working banner, a broken banner). `gpcheck selftest` crawls them and checks every verdict.
+- **Manual check:** a random sample of real sites is also inspected by hand in a GPC-enabled browser. `gpcheck sample` draws the sample without showing the automated verdicts, so the check is blind, and `gpcheck analyze --manual` reports the agreement rate and Cohen's kappa.
 
 ## Code layout
 
 ```
-gpcheck/crawler/    browser contexts (GPC on/off), visits, request recorder, banner clicks, scheduler
-gpcheck/classify/   domains and entities, tracker lists, cookies, opt-out signal decoding
+gpcheck/crawler/    browser contexts (GPC on/off), visits, request recorder, banner clicks, scheduler, policy check
+gpcheck/classify/   domains and entities, tracker lists, cookies, opt-out signal decoding, policy text
 gpcheck/analysis/   per-visit metrics, verdicts, statistics, report
 gpcheck/fixtures/   local test sites with known GPC behavior
 ```
@@ -126,6 +148,7 @@ Output is JSONL (raw visits), CSV, a DuckDB database and a Markdown report.
 
 - **Server-side sharing is invisible.** A clean result does not prove compliance; non-compliance findings are the strong claims.
 - **The crawler may be treated differently from a real visitor,** because of bot detection or geolocation errors. Blocked visits are logged and excluded.
+- **Policy text is read by keyword.** A policy split across several pages, or one that describes GPC in unusual wording, can be misclassified, and pages under 1,500 characters are treated as unreadable.
 - **Tracker and cookie lists are incomplete.** List versions are recorded with each analysis.
 - **Some sites apply the opt-out only after the first page load.** First-page and later-page trackers are reported separately.
 
@@ -140,4 +163,3 @@ Output is JSONL (raw visits), CSV, a DuckDB database and a Markdown report.
 
 - Longitudinal re-crawls after enforcement actions.
 - Decoding GPP strings fully, and identifying which event types (page views vs. purchases) still flow.
-- Comparing privacy-policy claims about GPC with measured behavior.

@@ -68,10 +68,13 @@ def analyze(
     trackers: list[Path] = typer.Option([], help="Extra tracker lists (DuckDuckGo tds.json, Disconnect, .txt)"),
     cookie_db: Optional[Path] = typer.Option(None, help="Open Cookie Database CSV"),
     lists_dir: Optional[Path] = typer.Option(Path("data/lists"), help="Auto-load lists downloaded by `gpcheck lists`"),
+    categories: Optional[Path] = typer.Option(None, help="CSV with columns site,category for a per-category table"),
+    manual: Optional[Path] = typer.Option(None, help="Hand-checked sheet from `gpcheck sample` (site,manual_verdict)"),
+    policy: Optional[Path] = typer.Option(Path("results/policy.jsonl"), help="Output of `gpcheck policy` (used if it exists)"),
 ):
     """Classify trackers and cookies, compute verdicts and statistics, write a report."""
-    from .analysis.metrics import Classifier
-    from .analysis.report import analyze as run_analyze
+    from .analysis.metrics import Classifier, load_records
+    from .analysis.report import analyze as run_analyze, load_site_column
     from .classify.cookies import load_open_cookie_database, seed_cookie_db
     from .classify.trackers import build_tracker_list
 
@@ -85,9 +88,52 @@ def analyze(
     db = seed_cookie_db()
     if cookie_db:
         load_open_cookie_database(cookie_db, db)
-    result = run_analyze(crawl_files or [Path("results/crawl.jsonl")], out, Classifier(build_tracker_list(tracker_paths), db))
+    result = run_analyze(crawl_files or [Path("results/crawl.jsonl")], out,
+                         Classifier(build_tracker_list(tracker_paths), db),
+                         categories=load_site_column(categories, "category") if categories else None,
+                         manual=load_site_column(manual, "manual_verdict") if manual else None,
+                         policy=load_records(policy) if policy and policy.exists() else None)
     typer.echo(f"Wrote {out}/report.md, CSV tables and gpcheck.duckdb")
     typer.echo(json.dumps(result["stats"], indent=2))
+
+
+@app.command()
+def policy(
+    sites: Path = typer.Argument(..., help="File with one domain or URL per line"),
+    out: Path = typer.Option(Path("results/policy.jsonl"), help="JSONL output (re-running resumes)"),
+    workers: int = typer.Option(4, help="Sites checked in parallel"),
+    limit: int = typer.Option(0, help="Only the first N sites (0 = all)"),
+    headful: bool = typer.Option(False, help="Show the browser"),
+    chromium: Optional[str] = typer.Option(None, envvar="GPCHECK_CHROMIUM", help="Path to a Chromium binary"),
+):
+    """Record each site's opt-out link and what its privacy policy says about GPC."""
+    from .crawler.policy import check_policies
+    from .crawler.runner import load_sites
+
+    site_list = load_sites(sites)
+    if limit:
+        site_list = site_list[:limit]
+    asyncio.run(check_policies(site_list, _cfg(0, 0, workers, headful, chromium, None), out, log=typer.echo))
+    typer.echo(f"Wrote {out}; `gpcheck analyze` will pick it up.")
+
+
+@app.command()
+def sample(
+    sites_csv: Path = typer.Argument(Path("results/analysis/sites.csv"), help="sites.csv written by `gpcheck analyze`"),
+    out: Path = typer.Option(Path("results/manual_check.csv"), help="Sheet to fill in by hand"),
+    n: int = typer.Option(20, help="Number of sites to draw"),
+    seed: int = typer.Option(0, help="Seed for the random draw"),
+):
+    """Draw a random sample of sites to verify by hand in a GPC-enabled browser."""
+    from .analysis.report import VERDICT_TEXT, write_sample
+
+    if out.exists():
+        typer.secho(f"{out} already exists; not overwriting (it may hold your manual verdicts).", fg=typer.colors.RED)
+        raise typer.Exit(1)
+    chosen = write_sample(sites_csv, out, n, seed)
+    typer.echo(f"Wrote {len(chosen)} sites to {out}. Fill in manual_verdict with one of: "
+               f"{', '.join(k for k in VERDICT_TEXT if k != 'inconclusive')}; "
+               f"then run `gpcheck analyze --manual {out}`.")
 
 
 @app.command("check-gpc")
