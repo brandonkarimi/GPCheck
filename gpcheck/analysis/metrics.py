@@ -11,10 +11,13 @@ from pathlib import Path
 
 from ..classify.cookies import CookieDB, cookie_key, is_tracking_cookie
 from ..classify.domains import etld1, host_of
+from ..classify.flows import parse_flow
 from ..classify.signals import declared_signals
 from ..classify.trackers import TrackerList
 
 IGNORED_SCHEMES = ("data:", "blob:", "chrome-extension:", "about:")
+# Requests that fetch code or assets rather than send data; excluded from opt-out propagation.
+ASSET_TYPES = {"script", "stylesheet", "font", "media", "manifest"}
 
 
 def load_records(path: str | Path) -> list[dict]:
@@ -37,6 +40,8 @@ class Classifier:
         third_party: set[str] = set()
         vendors: set[str] = set()
         tracker_requests = 0
+        with_optout = with_signal = data_requests = 0
+        events: set[str] = set()
         gpc_marked = gpc_total = 0
         classified = []
         for r in rec.get("requests", []):
@@ -51,8 +56,13 @@ class Classifier:
             is_3p = ent.is_third_party(host, site_host)
             is_tracker = is_3p and self.trackers.match(host) is not None
             counted = not (after_click and r.get("phase") != "post_action")
+            data_request = is_tracker and r.get("type") not in ASSET_TYPES
+            flow = parse_flow(url, r.get("post_data")) if data_request else None
             classified.append({**r, "host": host, "etld1": etld1(host), "third_party": is_3p,
-                               "tracker": is_tracker, "counted": counted})
+                               "tracker": is_tracker, "counted": counted,
+                               "vendor": self.trackers.owner(host) if is_tracker else None,
+                               "opt_out_passed": flow["opt_out_passed"] if flow else None,
+                               "event": flow["event"] if flow else None})
             if not counted:
                 continue
             if is_3p:
@@ -62,6 +72,12 @@ class Classifier:
                 tracker_domains.add(d)
                 vendors.add(self.trackers.owner(host))
                 tracker_requests += 1
+                if flow:
+                    data_requests += 1
+                    with_optout += flow["opt_out_passed"]
+                    with_signal += flow["privacy_signal_present"]
+                    if flow["event"]:
+                        events.add(flow["event"])
                 (first_page if r.get("page_index", 0) == 0 else later_pages).add(d)
 
         def tracking_keys(cookies: list[dict] | None) -> set[str]:
@@ -78,6 +94,12 @@ class Classifier:
             "n_third_party": len(third_party),
             "n_trackers": len(tracker_domains),
             "n_tracker_requests": tracker_requests,
+            "n_tracker_requests_with_optout": with_optout,
+            "n_tracker_requests_with_privacy_signal": with_signal,
+            "n_tracker_data_requests": data_requests,
+            "optout_propagation_rate": round(with_optout / data_requests, 3) if data_requests else None,
+            "tracker_events": ";".join(sorted(events)),
+            "vantage": rec.get("vantage", "unspecified"),
             "n_trackers_first_page": len(first_page),
             "n_trackers_later_pages": len(later_pages),
             "n_tracking_cookies": len(tracking_cookies),
@@ -159,6 +181,17 @@ def site_verdicts(visits: list[dict]) -> list[dict]:
             row["vendors_persisting"] = sorted(_vendors_majority(a) & _vendors_majority(b))
             row["vendors_dropped"] = sorted(_vendors_majority(a) - _vendors_majority(b))
 
+        rates = [g["optout_propagation_rate"] for g in b if g["optout_propagation_rate"] is not None]
+        rate_b = _median(rates)
+        row["optout_propagation_B"] = rate_b
+        if rate_b is None:
+            row["propagation_verdict"] = None if not b else "no_tracker_data_requests"
+        elif rate_b >= 0.999:
+            row["propagation_verdict"] = "all_requests_carry_optout"
+        elif rate_b > 0:
+            row["propagation_verdict"] = "some_requests_carry_optout"
+        else:
+            row["propagation_verdict"] = "no_optout_passed"
         if c:
             clicked = _majority([g["banner_clicked"] for g in c])
             present = _majority([g["banner_present"] for g in c])
@@ -225,4 +258,39 @@ def paired_stats(site_rows: list[dict]) -> dict:
     c = sum(1 for r in pairs if r["trackers_A"] == 0 and r["trackers_B"] > 0)
     out["mcnemar_off_yes_on_no"], out["mcnemar_off_no_on_yes"] = b, c
     out["mcnemar_p"] = float(binomtest(b, b + c, 0.5).pvalue) if b + c else None
+    return out
+
+
+def vendor_propagation(visits: list[dict]) -> list[dict]:
+    """Per vendor, with GPC on (condition B): how many tracker requests carried an opt-out."""
+    total: Counter = Counter()
+    passed: Counter = Counter()
+    sites: dict[str, set] = defaultdict(set)
+    for v in visits:
+        if v["status"] != "ok" or v["condition"] != "B":
+            continue
+        for r in v["_requests"]:
+            if r["tracker"] and r["counted"] and r["opt_out_passed"] is not None:
+                total[r["vendor"]] += 1
+                passed[r["vendor"]] += bool(r["opt_out_passed"])
+                sites[r["vendor"]].add(v["site"])
+    return sorted(({"vendor": k, "sites": len(sites[k]), "requests_gpc_on": n,
+                    "requests_with_optout": passed[k], "share_with_optout": round(passed[k] / n, 3)}
+                   for k, n in total.items()), key=lambda r: (-r["sites"], r["vendor"]))
+
+
+def vantage_comparison(rows_by_vantage: dict[str, list[dict]]) -> list[dict]:
+    """One row per site with its GPC verdict at each vantage point (e.g. state)."""
+    vantages = sorted(rows_by_vantage)
+    table: dict[str, dict] = defaultdict(dict)
+    for vantage, rows in rows_by_vantage.items():
+        for r in rows:
+            if r.get("verdict") is not None:
+                table[r["site"]][vantage] = r["verdict"]
+    out = []
+    for site, verdicts in sorted(table.items()):
+        row = {"site": site, **{v: verdicts.get(v) for v in vantages}}
+        honored = {v for v in vantages if verdicts.get(v) == "honors"}
+        row["honors_only_some"] = bool(honored) and len(honored) < len([v for v in vantages if verdicts.get(v)])
+        out.append(row)
     return out

@@ -85,6 +85,21 @@ Across sites, the analysis also reports:
 - an exact McNemar test on whether any tracker loads at all;
 - a per-vendor persistence rate: the share of sites where a vendor still loads with GPC on.
 
+## Opt-out propagation to vendors
+
+A site can honor GPC on the page and still send full tracking events to its vendors, or it can pass the opt-out downstream. With GPC on, each data-sending tracker request (beacons, XHR/fetch, pixels and iframes, but not script or style downloads) is checked for an opt-out signal. The URL and the request body (form, JSON or text, up to 4 KB) are both inspected:
+
+- `us_privacy` with `Y` in the opt-out position;
+- a GPC parameter (`gpc=1`);
+- Google `npa=1` (non-personalized ads), `ltd=1` (limited ads) or `rdp=1` (restricted data processing);
+- Meta `dpo=LDU` (Limited Data Use).
+
+GPP strings (`gpp`, `gpp_sid`) and event names (for example `ev=Purchase`) are recorded as well. Each site gets a propagation verdict: `all_requests_carry_optout`, `some_requests_carry_optout` or `no_optout_passed`. The report also gives a per-vendor share of requests that carried the opt-out.
+
+## Vantage points (multi-state comparison)
+
+Each crawl is labeled with its vantage point (`gpcheck crawl --vantage CO`). At the start of a crawl, the machine's city, region and country are looked up and stored; the IP address is not stored. Running the same site list from California, from another state with an opt-out-signal law (e.g. Colorado, Texas), and from a state without one tests whether sites honor GPC only where they are legally required to. `gpcheck analyze` accepts several crawl files and reports the verdict mix per vantage point, plus the sites whose verdict changes between them.
+
 ## Validation
 
 - **Test sites:** local fixture sites with known behavior (honors, ignores, declares but still tracks, never tracks, a working banner, a broken banner). `gpcheck selftest` crawls them and checks every verdict.
@@ -124,6 +139,5 @@ Output is JSONL (raw visits), CSV, a DuckDB database and a Markdown report.
 ## Future work
 
 - Longitudinal re-crawls after enforcement actions.
-- Comparing California with other states that require universal opt-out signals.
-- Parsing tracker request parameters, to see *what* data is sent and not just *whether* a request happens.
+- Decoding GPP strings fully, and identifying which event types (page views vs. purchases) still flow.
 - Comparing privacy-policy claims about GPC with measured behavior.

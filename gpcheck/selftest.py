@@ -11,7 +11,7 @@ from .classify.cookies import seed_cookie_db
 from .classify.trackers import build_tracker_list
 from .config import parse_conditions, CrawlConfig
 from .crawler.runner import crawl
-from .fixtures.server import EXPECTED_GPC, EXPECTED_REJECT, RESOLVER_ARG, FixtureServer
+from .fixtures.server import EXPECTED_GPC, EXPECTED_PROPAGATION, EXPECTED_REJECT, RESOLVER_ARG, FixtureServer
 
 
 def run_selftest(out: str | Path, chromium: str | None = None, dwell: float = 1.0,
@@ -26,8 +26,10 @@ def run_selftest(out: str | Path, chromium: str | None = None, dwell: float = 1.
     with FixtureServer() as server:
         gpc_sites = [server.url(h) for h in EXPECTED_GPC]
         banner_sites = [server.url(h) for h in EXPECTED_REJECT]
-        asyncio.run(crawl(gpc_sites, parse_conditions("A,B"), runs, cfg, crawl_file, log=lambda _: None))
-        asyncio.run(crawl(banner_sites, parse_conditions("A,C"), runs, cfg, crawl_file, log=lambda _: None))
+        asyncio.run(crawl(gpc_sites, parse_conditions("A,B"), runs, cfg, crawl_file, log=lambda _: None,
+                          vantage="local"))
+        asyncio.run(crawl(banner_sites, parse_conditions("A,C"), runs, cfg, crawl_file, log=lambda _: None,
+                          vantage="local"))
         port = server.port
     result = analyze(crawl_file, out / "analysis", Classifier(build_tracker_list(), seed_cookie_db()))
     by_host = {s["site"].split("//")[1].split(":")[0]: s for s in result["sites"]}
@@ -35,10 +37,14 @@ def run_selftest(out: str | Path, chromium: str | None = None, dwell: float = 1.
     for host, want in EXPECTED_GPC.items():
         got = by_host.get(host, {}).get("verdict")
         ok &= got == want
-        lines.append(f"{'PASS' if got == want else 'FAIL'}  {host:16} GPC verdict    expected {want:22} got {got}")
+        lines.append(f"{'PASS' if got == want else 'FAIL'}  {host:16} GPC verdict    expected {want:26} got {got}")
+    for host, want in EXPECTED_PROPAGATION.items():
+        got = by_host.get(host, {}).get("propagation_verdict")
+        ok &= got == want
+        lines.append(f"{'PASS' if got == want else 'FAIL'}  {host:16} opt-out passed expected {want:26} got {got}")
     for host, want in EXPECTED_REJECT.items():
         got = by_host.get(host, {}).get("reject_verdict")
         ok &= got == want
-        lines.append(f"{'PASS' if got == want else 'FAIL'}  {host:16} reject verdict expected {want:22} got {got}")
+        lines.append(f"{'PASS' if got == want else 'FAIL'}  {host:16} reject verdict expected {want:26} got {got}")
     lines.append("ALL PASSED" if ok else "SOME CHECKS FAILED")
     return ok, "\n".join(lines)

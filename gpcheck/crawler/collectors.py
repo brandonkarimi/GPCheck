@@ -26,6 +26,10 @@ class Recorder:
         except Exception:  # service-worker requests have no frame
             frame_url = None
         headers = request.headers
+        try:
+            post = request.post_data
+        except Exception:  # binary bodies
+            post = None
         self.requests.append({
             "url": request.url,
             "method": request.method,
@@ -33,6 +37,7 @@ class Recorder:
             "frame_url": frame_url,
             "navigation": request.is_navigation_request(),
             "sec_gpc": headers.get("sec-gpc"),
+            "post_data": post[:4096] if post else None,
             "page_index": self.page_index,
             "phase": self.phase,
             "t": round(time.monotonic() - self._t0, 3),

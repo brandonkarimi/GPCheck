@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import json
 import random
+import urllib.request
 from pathlib import Path
 from typing import Callable
 
@@ -26,6 +27,18 @@ def load_sites(path: str | Path) -> list[str]:
     return list(dict.fromkeys(sites))
 
 
+def lookup_geo(timeout: float = 10.0) -> dict | None:
+    """Best-effort location of this machine's public IP. Only city/region/country are kept;
+    the IP address itself is never stored."""
+    try:
+        req = urllib.request.Request("https://ipinfo.io/json", headers={"User-Agent": "gpcheck"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            data = json.loads(resp.read())
+        return {k: data.get(k) for k in ("city", "region", "country")}
+    except Exception:
+        return None
+
+
 def _done(out: Path) -> set[tuple[str, str, int]]:
     if not out.exists():
         return set()
@@ -40,7 +53,8 @@ def _done(out: Path) -> set[tuple[str, str, int]]:
 
 
 async def crawl(sites: list[str], conditions: list[Condition], runs: int, cfg: CrawlConfig,
-                out: str | Path, seed: int = 0, log: Callable[[str], None] = print) -> Path:
+                out: str | Path, seed: int = 0, log: Callable[[str], None] = print,
+                vantage: str = "unspecified", geo: dict | None = None) -> Path:
     """Each (site, run) visits all conditions back to back, in a random order, in fresh contexts.
 
     Re-running with the same output file resumes: finished visits are skipped.
@@ -70,6 +84,8 @@ async def crawl(sites: list[str], conditions: list[Condition], runs: int, cfg: C
                                "banner_action": cond.banner, "status": "error",
                                "error": "visit timeout", "requests": [], "cookies": [], "signals": {}}
                     rec["order"] = position
+                    rec["vantage"] = vantage
+                    rec["geo"] = geo
                     if subpages is None and rec.get("status") == "ok":
                         subpages = rec.get("subpages", [])
                     async with lock:

@@ -20,6 +20,11 @@ gpcheck crawl data/sites/sample.txt   # crawl (writes results/crawl.jsonl)
 gpcheck analyze                       # report in results/analysis/
 ```
 
-Run real crawls from a California IP address.
+Run real crawls from a California IP address. To compare states, crawl the same list from each location and analyze the files together:
+
+```bash
+gpcheck crawl data/sites/sample.txt --vantage TX --out results/tx.jsonl
+gpcheck analyze results/crawl.jsonl results/tx.jsonl
+```
 
 How it works: [docs/METHODOLOGY.md](docs/METHODOLOGY.md)

@@ -4,7 +4,9 @@ All hosts end in `.test` and resolve to 127.0.0.1 via Chromium's --host-resolver
 
   honors.test      honors GPC: no tracker, USP '1YYN', publishes /.well-known/gpc.json
   ignores.test     ignores GPC: tracker always loads, USP '1YNN'
-  liar.test        declares opt-out ('1YYN') when GPC is on but still loads the tracker
+  liar.test        declares opt-out ('1YYN') when GPC is on but still loads the tracker,
+                   and does not pass the opt-out to the tracker
+  passes.test      keeps the tracker, but passes the opt-out to it (us_privacy=1YYN on the beacon)
   clean.test       never tracks
   banner-ok.test   cookie banner; tracker loads only after 'Accept all'
   banner-bad.test  cookie banner; tracker loads no matter what you click
@@ -73,6 +75,8 @@ def site_body(host: str, gpc_header: bool, port: int) -> str | None:
         return USP_API % "'1YNN'" + TRACKER_TAG
     if host == "liar.test":
         return USP_API % f"({GPC}) ? '1YYN' : '1YNN'" + TRACKER_TAG
+    if host == "passes.test":
+        return USP_API % f"({GPC}) ? '1YYN' : '1YNN'" + "<script>window.__pass_usp = true;</script>" + TRACKER_TAG
     if host == "clean.test":
         return USP_API % f"({GPC}) ? '1YYN' : '1YNN'"
     if host == "banner-ok.test":
@@ -108,7 +112,11 @@ class Handler(BaseHTTPRequestHandler):
         if host == "tracker.test":
             if path == "/pixel.js":
                 js = ("document.cookie = '_fbp=fb.1.' + Date.now() + '.' + Math.random() + '; path=/; max-age=7776000';"
-                      f"new Image().src = 'http://tracker.test:{port}/collect?ev=PageView&dl=' + encodeURIComponent(location.href);")
+                      "let usp = '';"
+                      "if (window.__pass_usp && window.__uspapi) window.__uspapi('getUSPData', 1,"
+                      " d => { usp = '&us_privacy=' + d.uspString; });"
+                      f"new Image().src = 'http://tracker.test:{port}/collect?ev=PageView' + usp +"
+                      " '&dl=' + encodeURIComponent(location.href);")
                 return self._send(js, "application/javascript")
             if path == "/collect":
                 return self._send(b"", "image/gif", 204)
@@ -163,6 +171,11 @@ EXPECTED_GPC = {
     "honors.test": "honors",
     "ignores.test": "ignores",
     "liar.test": "declares_only",
+    "passes.test": "declares_only",
     "clean.test": "no_tracking_baseline",
+}
+EXPECTED_PROPAGATION = {
+    "passes.test": "all_requests_carry_optout",
+    "liar.test": "no_optout_passed",
 }
 EXPECTED_REJECT = {"banner-ok.test": "reject_works", "banner-bad.test": "reject_ignored"}

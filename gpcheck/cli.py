@@ -37,22 +37,33 @@ def crawl(
     headful: bool = typer.Option(False, help="Show the browser (needs a display or Xvfb)"),
     chromium: Optional[str] = typer.Option(None, envvar="GPCHECK_CHROMIUM", help="Path to a Chromium binary"),
     screenshots: Optional[Path] = typer.Option(None, help="Directory for homepage screenshots"),
+    vantage: str = typer.Option("CA", help="Label for where this crawl runs from, e.g. CA, CO, TX, FL"),
+    geo: bool = typer.Option(True, help="Look up this machine's city/region (IP is not stored)"),
 ):
     """Visit every site under each condition and record requests, cookies and opt-out signals."""
-    from .crawler.runner import crawl as run_crawl, load_sites
+    from .crawler.runner import crawl as run_crawl, load_sites, lookup_geo
 
     site_list = load_sites(sites)
     if limit:
         site_list = site_list[:limit]
     conds = parse_conditions(conditions)
     cfg = _cfg(dwell, subpages, workers, headful, chromium, screenshots)
+    location = lookup_geo() if geo else None
+    if location:
+        typer.echo(f"Vantage {vantage}: this machine appears to be in "
+                   f"{location.get('city')}, {location.get('region')}, {location.get('country')}")
+        if vantage.upper() == "CA" and location.get("region") != "California":
+            typer.secho("Warning: --vantage CA but this IP does not geolocate to California "
+                        "(VPN on? wrong machine?)", fg=typer.colors.YELLOW)
     typer.echo(f"Crawling {len(site_list)} sites x {len(conds)} conditions x {runs} runs -> {out}")
-    asyncio.run(run_crawl(site_list, conds, runs, cfg, out, seed=seed, log=typer.echo))
+    asyncio.run(run_crawl(site_list, conds, runs, cfg, out, seed=seed, log=typer.echo,
+                          vantage=vantage, geo=location))
 
 
 @app.command()
 def analyze(
-    crawl_file: Path = typer.Argument(Path("results/crawl.jsonl")),
+    crawl_files: list[Path] = typer.Argument(None, help="One or more crawl files, e.g. one per state "
+                                             "(default: results/crawl.jsonl)"),
     out: Path = typer.Option(Path("results/analysis"), help="Output directory"),
     trackers: list[Path] = typer.Option([], help="Extra tracker lists (DuckDuckGo tds.json, Disconnect, .txt)"),
     cookie_db: Optional[Path] = typer.Option(None, help="Open Cookie Database CSV"),
@@ -74,8 +85,8 @@ def analyze(
     db = seed_cookie_db()
     if cookie_db:
         load_open_cookie_database(cookie_db, db)
-    result = run_analyze(crawl_file, out, Classifier(build_tracker_list(tracker_paths), db))
-    typer.echo(f"Wrote {out}/report.md, sites.csv, vendors.csv, visits.csv, gpcheck.duckdb")
+    result = run_analyze(crawl_files or [Path("results/crawl.jsonl")], out, Classifier(build_tracker_list(tracker_paths), db))
+    typer.echo(f"Wrote {out}/report.md, CSV tables and gpcheck.duckdb")
     typer.echo(json.dumps(result["stats"], indent=2))
 
 
