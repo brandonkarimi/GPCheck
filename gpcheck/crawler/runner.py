@@ -19,7 +19,7 @@ from .visit import visit_site
 def load_sites(path: str | Path) -> list[str]:
     """One site per line (domain or URL). CSV lines like 'rank,domain' are accepted too."""
     sites: list[str] = []
-    for line in Path(path).read_text().splitlines():
+    for line in Path(path).read_text(encoding="utf-8").splitlines():
         line = line.strip()
         if not line or line.startswith("#") or line.lower().startswith(("rank,", "domain", "url")):
             continue
@@ -43,7 +43,7 @@ def _done(out: Path) -> set[tuple[str, str, int]]:
     if not out.exists():
         return set()
     done = set()
-    for line in out.read_text().splitlines():
+    for line in out.read_text(encoding="utf-8").splitlines():
         try:
             r = json.loads(line)
             done.add((r["site"], r["condition"], r["run"]))
@@ -89,7 +89,7 @@ async def crawl(sites: list[str], conditions: list[Condition], runs: int, cfg: C
                     if subpages is None and rec.get("status") == "ok":
                         subpages = rec.get("subpages", [])
                     async with lock:
-                        with out.open("a") as fh:
+                        with out.open("a", encoding="utf-8") as fh:
                             fh.write(json.dumps(rec) + "\n")
                     log(f"[run {run}] {site} {cond.name}: {rec['status']} "
                         f"({len(rec.get('requests', []))} requests, {len(rec.get('cookies', []))} cookies)")

@@ -33,7 +33,7 @@ class CookieDB:
 
 def seed_cookie_db() -> CookieDB:
     db = CookieDB()
-    text = resources.files("gpcheck.data").joinpath("seed_cookies.txt").read_text()
+    text = resources.files("gpcheck.data").joinpath("seed_cookies.txt").read_text(encoding="utf-8")
     for line in text.splitlines():
         if line.strip() and not line.startswith("#"):
             db.add(line)

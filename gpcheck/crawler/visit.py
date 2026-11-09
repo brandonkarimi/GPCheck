@@ -41,6 +41,17 @@ async def _dwell(page: Page, seconds: float) -> None:
         await asyncio.sleep(seconds / steps)
 
 
+async def _goto(page: Page, url: str):
+    """Navigate without requiring the `load` event: ad-heavy pages can take longer than the
+    navigation timeout to fire it even though the page is up and its trackers are running."""
+    resp = await page.goto(url, wait_until="domcontentloaded")
+    try:
+        await page.wait_for_load_state("load", timeout=15_000)
+    except Exception:
+        pass
+    return resp
+
+
 async def discover_links(page: Page, home: str, n: int) -> list[str]:
     """Pick n same-site links. The choice is stable (hash-ordered) so runs are comparable."""
     if n <= 0:
@@ -79,7 +90,7 @@ async def visit_site(browser: Browser, site: str, condition: Condition, run: int
     recorder = Recorder(context)
     try:
         page = await context.new_page()
-        resp = await page.goto(home, wait_until="load")
+        resp = await _goto(page, home)
         record["pages"].append({"url": page.url, "status": resp.status if resp else None})
         record["final_url"] = page.url
 
@@ -89,6 +100,10 @@ async def visit_site(browser: Browser, site: str, condition: Condition, run: int
             recorder.phase = "post_action"
 
         await _dwell(page, cfg.dwell)
+        try:
+            record["title"] = (await page.title())[:200]
+        except Exception:
+            record["title"] = None
         record["signals"] = await probe_signals(page, recorder)
         record["local_storage"] = await local_storage_keys(page)
         if cfg.screenshots_dir:
@@ -102,7 +117,7 @@ async def visit_site(browser: Browser, site: str, condition: Condition, run: int
         for url in links:
             recorder.page_index += 1
             try:
-                resp = await page.goto(url, wait_until="load")
+                resp = await _goto(page, url)
                 record["pages"].append({"url": page.url, "status": resp.status if resp else None})
                 await _dwell(page, cfg.dwell)
             except Exception as e:

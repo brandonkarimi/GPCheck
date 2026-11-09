@@ -37,11 +37,11 @@ def _visit(site, vantage, cond, run, tracker, usp):
 
 def test_vantage_comparison(tmp_path):
     ca, tx = tmp_path / "ca.jsonl", tmp_path / "tx.jsonl"
-    with ca.open("w") as fh:
+    with ca.open("w", encoding="utf-8") as fh:
         for run in range(2):
             fh.write(json.dumps(_visit("shop.com", "CA", "A", run, True, "1YNN")) + "\n")
             fh.write(json.dumps(_visit("shop.com", "CA", "B", run, False, "1YYN")) + "\n")
-    with tx.open("w") as fh:
+    with tx.open("w", encoding="utf-8") as fh:
         for run in range(2):
             fh.write(json.dumps(_visit("shop.com", "TX", "A", run, True, "1YNN")) + "\n")
             fh.write(json.dumps(_visit("shop.com", "TX", "B", run, True, "1YNN")) + "\n")
@@ -50,5 +50,5 @@ def test_vantage_comparison(tmp_path):
     assert row["CA"] == "honors" and row["TX"] == "ignores" and row["honors_only_some"]
     tx_row = next(r for r in result["all_sites"] if r["vantage"] == "TX")
     assert tx_row["propagation_verdict"] == "no_optout_passed"
-    report = (tmp_path / "out" / "report.md").read_text()
+    report = (tmp_path / "out" / "report.md").read_text(encoding="utf-8")
     assert "GPC behavior by vantage point" in report and "Is the opt-out passed to vendors" in report

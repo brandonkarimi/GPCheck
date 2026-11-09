@@ -94,12 +94,12 @@ def load_tracker_list(path: str | Path) -> TrackerList:
     path = Path(path)
     if path.suffix == ".txt":
         tl = TrackerList(sources=[str(path)])
-        for line in path.read_text().splitlines():
+        for line in path.read_text(encoding="utf-8").splitlines():
             line = line.strip()
             if line and not line.startswith("#"):
                 tl.domains[line.lower()] = {"owner": None, "categories": []}
         return tl
-    data = json.loads(path.read_text())
+    data = json.loads(path.read_text(encoding="utf-8"))
     if "trackers" in data and "entities" in data and isinstance(data["trackers"], dict):
         return _from_tds(data, str(path))
     if "categories" in data:
@@ -110,7 +110,7 @@ def load_tracker_list(path: str | Path) -> TrackerList:
 
 
 def seed_tracker_list() -> TrackerList:
-    text = resources.files("gpcheck.data").joinpath("seed_trackers.json").read_text()
+    text = resources.files("gpcheck.data").joinpath("seed_trackers.json").read_text(encoding="utf-8")
     return _from_seed(json.loads(text), "seed_trackers.json")
 
 

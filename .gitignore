@@ -4,6 +4,5 @@ __pycache__/
 .venv/
 results/
 *.duckdb
-data/lists/*.json
-data/lists/*.csv
+data/lists/
 data/sites/tranco*.csv

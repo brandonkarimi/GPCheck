@@ -33,7 +33,7 @@ def fetch_lists(dest: str | Path) -> list[Path]:
         path.write_bytes(_get(url))
         written.append(path)
     (dest / "VERSIONS.txt").write_text(
-        f"Downloaded {date.today().isoformat()}\n" + "".join(f"{n}: {u}\n" for n, u in SOURCES.items()))
+        f"Downloaded {date.today().isoformat()}\n" + "".join(f"{n}: {u}\n" for n, u in SOURCES.items()), encoding="utf-8")
     return written
 
 
@@ -43,7 +43,7 @@ def fetch_tranco(dest: str | Path, top: int) -> Path:
         text = zf.read(zf.namelist()[0]).decode()
     dest = Path(dest)
     dest.parent.mkdir(parents=True, exist_ok=True)
-    with dest.open("w", newline="") as fh:
+    with dest.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["rank", "domain"])
         for i, row in enumerate(csv.reader(io.StringIO(text))):
