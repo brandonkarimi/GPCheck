@@ -13,9 +13,9 @@ California's CCPA (as amended by the CPRA) requires covered businesses to treat 
 
 ## Scope
 
-- **Sites:** popular domains from the Tranco list, filtered to US-relevant, English-language, commercial sites.
+- **Sites:** 500 popular US consumer-facing commercial sites. The Tranco top list on its own is dominated by infrastructure (CDNs, DNS, APIs) and non-US domains, so the sample starts from a hand-drawn candidate list of 775 sites in 13 categories (`data/sites/candidates.csv`), and `gpcheck sites` keeps the 500 that rank highest in Tranco. Non-profits and government sites are left out, since the CCPA covers businesses. The candidate list and its category labels are a judgment call, so the sample is popular US sites, not a random draw from the web.
 - **Pages:** the homepage plus up to two same-site internal pages.
-- **Vantage point:** a California IP address, since many sites geo-gate CCPA behavior.
+- **Vantage point:** a California IP address, since many sites geo-gate CCPA behavior. The study covers California only.
 - **Repetitions:** three or more paired runs per site, because ad auctions are non-deterministic.
 - **Out of scope:**
   - Logged-in tracking, and server-to-server data sharing (which is invisible to the browser).
@@ -118,9 +118,9 @@ Each site's claim is then joined to its measured verdict:
 
 The first row is the policy-relevant one: a public statement that is contradicted by observed behavior is the pattern behind California's Sephora (2022) and Healthline (2025) enforcement actions. The report also lists sites that neither reduce tracking under GPC nor show an opt-out link. The text classifier is keyword-based, so every flagged sentence should be read by hand before a site is named.
 
-## Vantage points (multi-state comparison)
+## Vantage points (not used in this study)
 
-Each crawl is labeled with its vantage point (`gpcheck crawl --vantage CO`). At the start of a crawl, the machine's city, region and country are looked up and stored; the IP address is not stored. Running the same site list from California, from another state with an opt-out-signal law (e.g. Colorado, Texas), and from a state without one tests whether sites honor GPC only where they are legally required to. `gpcheck analyze` accepts several crawl files and reports the verdict mix per vantage point, plus the sites whose verdict changes between them.
+The tool can compare locations, but this study does not: it needs the same crawl repeated from other states, and is left as future work. Each crawl is labeled with its vantage point (`gpcheck crawl --vantage CO`). At the start of a crawl, the machine's city, region and country are looked up and stored; the IP address is not stored. Running the same site list from California, from another state with an opt-out-signal law (e.g. Colorado, Texas), and from a state without one tests whether sites honor GPC only where they are legally required to. `gpcheck analyze` accepts several crawl files and reports the verdict mix per vantage point, plus the sites whose verdict changes between them.
 
 ## Validation
 
@@ -162,4 +162,5 @@ Output is JSONL (raw visits), CSV, a DuckDB database and a Markdown report.
 ## Future work
 
 - Longitudinal re-crawls after enforcement actions.
+- Repeating the crawl from states with and without an opt-out-signal law, to test whether sites honor GPC only where they must.
 - Decoding GPP strings fully, and identifying which event types (page views vs. purchases) still flow.

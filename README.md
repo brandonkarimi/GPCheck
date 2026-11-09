@@ -20,11 +20,11 @@ gpcheck crawl data/sites/sample.txt   # crawl (writes results/crawl.jsonl)
 gpcheck analyze                       # report in results/analysis/
 ```
 
-Run real crawls from a California IP address. To compare states, crawl the same list from each location and analyze the files together:
+Run real crawls from a California IP address. The study sample is the 500 most popular sites from a hand-drawn list of US consumer sites, ranked by Tranco:
 
 ```bash
-gpcheck crawl data/sites/sample.txt --vantage TX --out results/tx.jsonl
-gpcheck analyze results/crawl.jsonl results/tx.jsonl
+gpcheck sites                         # writes data/sites/study_500.txt and study_categories.csv
+gpcheck crawl data/sites/study_500.txt --out results/study.jsonl
 ```
 
 To compare what sites say with what they do, record each site's opt-out link and privacy policy. The next `gpcheck analyze` adds a "claims vs. measured behavior" section:
@@ -49,3 +49,5 @@ gpcheck analyze --manual results/manual_check.csv
 How it works: [docs/METHODOLOGY.md](docs/METHODOLOGY.md)
 
 Pilot results on 30 sites: [docs/PILOT.md](docs/PILOT.md)
+
+Checking a site by hand: [docs/MANUAL_CHECK.md](docs/MANUAL_CHECK.md)
