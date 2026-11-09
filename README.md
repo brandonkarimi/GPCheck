@@ -47,3 +47,5 @@ gpcheck analyze --manual results/manual_check.csv
 ```
 
 How it works: [docs/METHODOLOGY.md](docs/METHODOLOGY.md)
+
+Pilot results on 30 sites: [docs/PILOT.md](docs/PILOT.md)
