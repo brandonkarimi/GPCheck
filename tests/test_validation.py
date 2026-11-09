@@ -46,6 +46,20 @@ def test_blocked_site_is_inconclusive_not_clean(tmp_path):
     assert "4 blocked by bot protection" in (tmp_path / "out" / "report.md").read_text(encoding="utf-8")
 
 
+def test_partly_blocked_site_is_inconclusive(tmp_path):
+    visits = [_visit("half.com", cond, 0, True) for cond in "AB"]
+    visits += [_visit("half.com", cond, 1, False, status=429, title="Access to this page has been denied")
+               for cond in "AB"]
+    assert _analyze(tmp_path, visits)["sites"][0]["verdict"] == "inconclusive"
+
+
+def test_trackers_remaining(tmp_path):
+    visits = [_visit("shop.com", "A", r, True) for r in range(2)]
+    visits += [_visit("shop.com", "B", r, False, "1YYN") for r in range(2)]
+    row = _analyze(tmp_path, visits)["sites"][0]
+    assert row["verdict"] == "honors" and row["trackers_remaining"] == 0.0
+
+
 def test_wilson_and_kappa():
     low, high = wilson(5, 10)
     assert low == pytest.approx(0.237, abs=0.001) and high == pytest.approx(0.763, abs=0.001)

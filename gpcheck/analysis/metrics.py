@@ -188,6 +188,8 @@ def site_verdicts(visits: list[dict]) -> list[dict]:
             by[(v["site"], v["condition"])].append(v)
     sites = sorted({v["site"] for v in visits})
     attempted = {(v["site"], v["condition"]) for v in visits}
+    # A site that walls off some A/B visits often serves a degraded page on the others.
+    blocked = {v["site"] for v in visits if v["status"] == "blocked" and v["condition"] in "AB"}
     rows = []
     for site in sites:
         a, b, c, d = (by.get((site, k), []) for k in "ABCD")
@@ -205,12 +207,14 @@ def site_verdicts(visits: list[dict]) -> list[dict]:
 
         if (site, "A") not in attempted or (site, "B") not in attempted:
             row["verdict"] = None  # GPC pair not part of this crawl (e.g. banner-only run)
-        elif not a or not b:
+        elif not a or not b or site in blocked:
             row["verdict"] = "inconclusive"
         else:
             dt = row["trackers_A"] - row["trackers_B"]
             dc = row["cookies_A"] - row["cookies_B"]
             row["delta_trackers"], row["delta_cookies"] = dt, dc
+            # Share of baseline tracker domains that still load with GPC on (1.0 = nothing changed).
+            row["trackers_remaining"] = round(row["trackers_B"] / row["trackers_A"], 3) if row["trackers_A"] else None
             reduced = (dt >= 1 and dt > noise_t) or (dc >= 1 and dc > noise_c)
             declared = bool(row["declared_optout_B"])
             if row["trackers_A"] == 0 and row["cookies_A"] == 0:

@@ -79,7 +79,7 @@ For each site, the median over runs is taken of the distinct tracker domains and
 | `no_tracking_baseline` | no trackers or tracking cookies even with GPC off |
 | `inconclusive` | visits failed or were blocked |
 
-A visit counts as **blocked**, and is excluded like a failed visit, when the homepage returns HTTP 401, 403, 429 or 503, or when the page title matches a known bot-challenge page ("Access Denied", "Just a moment...", and similar). Without this, a bot wall served under both conditions would look like a site with no trackers.
+A visit counts as **blocked**, and is excluded like a failed visit, when the homepage returns HTTP 401, 403, 429 or 503, or when the page title matches a known bot-challenge page ("Access Denied", "Just a moment...", and similar). Without this, a bot wall served under both conditions would look like a site with no trackers. A site with any blocked A or B visit is `inconclusive`, because the visits that get through may be degraded. For every site with a verdict, the report also gives the share of baseline tracker domains that still load with GPC on, since a drop beyond the noise floor can leave most trackers in place.
 
 Across sites, the analysis also reports:
 

@@ -297,11 +297,20 @@ def render_report(sites, vendors, stats, visits, classifier, input_path, primary
         lines += ["", "## GPC vs. 'Accept all' conflict (B vs. D)", ""]
         lines += [f"- `{k}`: {n}" for k, n in cv.most_common()]
     lines += ["", "## Per-site detail", "",
-              "| Site | Verdict | Trackers off→on | Cookies off→on | Declared opt-out (GPC on) | gpc.json |",
-              "|---|---|---|---|---|---|"]
+              "| Site | Verdict | Trackers off→on | Trackers remaining | Cookies off→on | "
+              "Declared opt-out (GPC on) | gpc.json |",
+              "|---|---|---|---:|---|---|---|"]
     for s in gpc_sites:
+        left = s.get("trackers_remaining")
         lines.append(f"| {s['site']} | `{s['verdict']}` | {s.get('trackers_A')}→{s.get('trackers_B')} | "
+                     f"{'–' if left is None else f'{left:.0%}'} | "
                      f"{s.get('cookies_A')}→{s.get('cookies_B')} | {s.get('declared_optout_B')} | {s.get('gpc_json')} |")
+    reduced = [s["trackers_remaining"] for s in gpc_sites
+               if s["verdict"] in ("honors", "reduces_without_declaring") and s.get("trackers_remaining") is not None]
+    if reduced:
+        half = sum(r > 0.5 for r in reduced)
+        lines += ["", f"Of the {len(reduced)} sites where tracking drops, {half} still load more than half of their "
+                  "baseline tracker domains with GPC on. A drop is not the same as a full opt-out."]
     lines += ["", "> Verdicts describe browser-observable behavior only. Server-side sharing is invisible to this "
               "tool, so a clean result is not proof of compliance, and no verdict is a legal conclusion.", ""]
     return "\n".join(lines)
