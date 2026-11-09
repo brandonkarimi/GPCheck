@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass, field
 from importlib import resources
 from pathlib import Path
@@ -11,6 +12,28 @@ from .domains import EntityMap, etld1
 
 DISCONNECT_CATEGORIES = {"Advertising", "Analytics", "Social", "FingerprintingInvasive", "FingerprintingGeneral",
                          "Cryptomining", "Email", "EmailAggressive"}
+
+
+# The lists name the same company differently ("Google", "Google LLC", "Google Ads").
+_LEGAL_SUFFIX = re.compile(r"[,\s]+(llc|inc|ltd|limited|gmbh|corp|corporation|co|s\.?a\.?s|s\.?a|b\.?v|ag|plc|"
+                           r"pte|pty|s\.?r\.?l|a/s|ab|oy)\.?$", re.I)
+_ALIASES = {
+    "google ads": "Google", "alphabet": "Google", "youtube": "Google", "doubleclick": "Google",
+    "facebook": "Meta", "meta platforms": "Meta", "instagram": "Meta",
+    "yahoo!": "Yahoo", "verizon media": "Yahoo", "oath": "Yahoo",
+    "amazon technologies": "Amazon", "amazon.com": "Amazon", "amazon web services": "Amazon",
+    "microsoft corporation": "Microsoft", "xandr": "Microsoft", "appnexus": "Microsoft", "linkedin": "Microsoft",
+    "adobe systems": "Adobe", "twitter": "X", "x corp": "X", "the trade desk": "The Trade Desk",
+    "bytedance": "TikTok", "tiktok": "TikTok", "oracle corporation": "Oracle",
+}
+
+
+def canonical_owner(name: str) -> str:
+    """One name per company: drop legal suffixes and fold known aliases together."""
+    clean = name.strip()
+    for _ in range(2):  # "Foo Technologies, Inc." and "Foo Co., Ltd."
+        clean = _LEGAL_SUFFIX.sub("", clean).strip(" ,.")
+    return _ALIASES.get(clean.lower(), clean)
 
 
 @dataclass
@@ -34,8 +57,8 @@ class TrackerList:
     def owner(self, host: str) -> str:
         hit = self.match(host)
         if hit and hit.get("owner"):
-            return hit["owner"]
-        return self.entities.entity(host)
+            return canonical_owner(hit["owner"])
+        return canonical_owner(self.entities.entity(host))
 
     def merge(self, other: "TrackerList") -> None:
         for d, info in other.domains.items():
