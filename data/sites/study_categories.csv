@@ -1,0 +1,501 @@
+site,category,tranco_rank
+apple.com,retail,12
+amazon.com,retail,29
+netflix.com,entertainment,43
+zoom.us,technology and telecom,60
+adobe.com,technology and telecom,61
+yahoo.com,news,70
+spotify.com,entertainment,77
+roblox.com,entertainment,80
+epicgames.com,entertainment,83
+msn.com,news,95
+intuit.com,finance,108
+samsung.com,retail,120
+dropbox.com,technology and telecom,132
+tumblr.com,technology and telecom,156
+nytimes.com,news,160
+godaddy.com,technology and telecom,162
+shopify.com,technology and telecom,170
+paypal.com,finance,175
+cnn.com,news,193
+ebay.com,retail,196
+soundcloud.com,entertainment,197
+theguardian.com,news,202
+medium.com,technology and telecom,207
+stripe.com,finance,208
+forbes.com,news,227
+weather.com,lifestyle,229
+twitch.tv,entertainment,231
+salesforce.com,technology and telecom,258
+hubspot.com,technology and telecom,261
+imdb.com,entertainment,263
+hp.com,retail,284
+reuters.com,news,286
+slack.com,technology and telecom,287
+booking.com,travel,291
+steampowered.com,entertainment,297
+canva.com,technology and telecom,303
+grammarly.com,technology and telecom,309
+etsy.com,retail,338
+espn.com,sports,344
+ea.com,entertainment,354
+dell.com,retail,365
+wsj.com,news,374
+abcnews.go.com,news,396
+bloomberg.com,news,401
+washingtonpost.com,news,407
+substack.com,technology and telecom,422
+aol.com,news,425
+temu.com,retail,427
+indeed.com,jobs and education,428
+aliexpress.com,retail,454
+mcafee.com,technology and telecom,468
+duolingo.com,jobs and education,477
+speedtest.net,technology and telecom,479
+shein.com,retail,485
+walmart.com,retail,486
+cnbc.com,news,488
+goodreads.com,entertainment,491
+businessinsider.com,news,493
+eventbrite.com,entertainment,501
+quora.com,technology and telecom,504
+foxnews.com,news,509
+playstation.com,entertainment,517
+fandom.com,entertainment,518
+shop.app,retail,530
+stackoverflow.com,technology and telecom,547
+wired.com,news,565
+time.com,news,578
+tripadvisor.com,travel,585
+dailymail.com,news,589
+squarespace.com,technology and telecom,592
+wix.com,technology and telecom,601
+target.com,retail,607
+nintendo.com,entertainment,621
+usatoday.com,news,627
+techcrunch.com,news,631
+ikea.com,retail,639
+accuweather.com,lifestyle,644
+merriam-webster.com,lifestyle,648
+ups.com,technology and telecom,658
+ring.com,technology and telecom,666
+nike.com,retail,675
+britannica.com,lifestyle,686
+uber.com,travel,690
+yelp.com,food,693
+cbsnews.com,news,698
+craigslist.org,technology and telecom,747
+cnet.com,news,754
+homedepot.com,retail,765
+mailchimp.com,technology and telecom,776
+mlb.com,sports,787
+apnews.com,news,789
+marriott.com,travel,792
+bestbuy.com,retail,793
+imgur.com,technology and telecom,796
+zillow.com,real estate,797
+lenovo.com,retail,802
+disneyplus.com,entertainment,822
+fiverr.com,jobs and education,827
+people.com,news,828
+airbnb.com,travel,857
+theverge.com,news,867
+nbcnews.com,news,900
+bankofamerica.com,finance,905
+lg.com,retail,922
+latimes.com,news,926
+max.com,entertainment,928
+genius.com,entertainment,950
+ancestry.com,health,959
+huffpost.com,news,965
+lowes.com,retail,974
+hm.com,retail,975
+spectrum.com,technology and telecom,979
+paramountplus.com,entertainment,996
+costco.com,retail,1000
+t-mobile.com,technology and telecom,1016
+nationalgeographic.com,lifestyle,1019
+garmin.com,retail,1021
+hilton.com,travel,1037
+healthline.com,health,1046
+theatlantic.com,news,1047
+kohls.com,retail,1063
+investopedia.com,finance,1068
+redfin.com,real estate,1080
+webmd.com,health,1086
+pandora.com,entertainment,1089
+nypost.com,news,1105
+quizlet.com,jobs and education,1113
+tesla.com,automotive,1131
+att.com,technology and telecom,1135
+giphy.com,technology and telecom,1173
+coursera.org,jobs and education,1211
+pluto.tv,entertainment,1256
+coinbase.com,finance,1269
+fortune.com,news,1290
+psychologytoday.com,health,1465
+newsweek.com,news,1469
+fedex.com,technology and telecom,1716
+usnews.com,news,1802
+buzzfeed.com,news,1809
+xfinity.com,technology and telecom,1821
+1password.com,technology and telecom,1840
+newyorker.com,news,1842
+arstechnica.com,news,1850
+hulu.com,entertainment,1913
+zdnet.com,news,1915
+marketwatch.com,news,1945
+kraken.com,finance,2004
+vice.com,news,2017
+norton.com,technology and telecom,2022
+udemy.com,jobs and education,2039
+fastcompany.com,news,2065
+wikihow.com,lifestyle,2072
+ticketmaster.com,entertainment,2074
+peacocktv.com,entertainment,2077
+gizmodo.com,news,2098
+wunderground.com,lifestyle,2107
+squareup.com,finance,2123
+ign.com,entertainment,2130
+sony.com,retail,2149
+xbox.com,entertainment,2165
+engadget.com,news,2194
+barnesandnoble.com,retail,2200
+mashable.com,news,2203
+verizon.com,technology and telecom,2245
+americanexpress.com,finance,2254
+ihg.com,travel,2262
+variety.com,news,2285
+getyourguide.com,travel,2314
+medicalnewstoday.com,health,2328
+doordash.com,food,2334
+expedia.com,travel,2340
+fanduel.com,sports,2359
+politico.com,news,2375
+vox.com,news,2414
+fidelity.com,finance,2422
+klarna.com,finance,2423
+nba.com,sports,2440
+lastpass.com,technology and telecom,2445
+rollingstone.com,news,2457
+axios.com,news,2461
+inc.com,news,2462
+techradar.com,news,2465
+crunchyroll.com,entertainment,2483
+vanguard.com,finance,2485
+uhc.com,health,2492
+slate.com,news,2502
+iheart.com,entertainment,2526
+instacart.com,retail,2540
+upwork.com,jobs and education,2543
+audible.com,entertainment,2544
+ford.com,automotive,2548
+affirm.com,finance,2549
+starbucks.com,food,2552
+schwab.com,finance,2558
+nordvpn.com,technology and telecom,2560
+pcmag.com,news,2561
+siriusxm.com,entertainment,2583
+sonos.com,retail,2600
+hollywoodreporter.com,news,2604
+nextdoor.com,lifestyle,2608
+hyatt.com,travel,2620
+wayfair.com,retail,2634
+qz.com,news,2636
+entrepreneur.com,news,2648
+thehill.com,news,2690
+sfgate.com,news,2731
+capitalone.com,finance,2759
+gamespot.com,entertainment,2811
+robinhood.com,finance,2825
+realtor.com,real estate,2875
+glassdoor.com,jobs and education,2892
+chicagotribune.com,news,2927
+dictionary.com,lifestyle,2951
+howstuffworks.com,lifestyle,2952
+rottentomatoes.com,entertainment,2975
+history.com,lifestyle,2989
+ubereats.com,food,2999
+vogue.com,lifestyle,3041
+medscape.com,health,3061
+wellsfargo.com,finance,3065
+nfl.com,sports,3076
+tmz.com,news,3095
+foodnetwork.com,food,3114
+fool.com,finance,3117
+vrbo.com,travel,3137
+esquire.com,lifestyle,3168
+elle.com,lifestyle,3175
+thedailybeast.com,news,3205
+chase.com,finance,3214
+walgreens.com,retail,3218
+dish.com,entertainment,3238
+cbssports.com,sports,3243
+billboard.com,entertainment,3271
+zara.com,retail,3275
+aa.com,travel,3284
+united.com,travel,3298
+delta.com,travel,3301
+goodhousekeeping.com,lifestyle,3305
+cosmopolitan.com,lifestyle,3309
+adidas.com,retail,3323
+mcdonalds.com,food,3342
+si.com,sports,3351
+today.com,news,3355
+toyota.com,automotive,3382
+lifehacker.com,lifestyle,3386
+macys.com,retail,3415
+asos.com,retail,3419
+samsclub.com,retail,3428
+allstate.com,finance,3429
+deadline.com,news,3432
+allrecipes.com,food,3438
+citi.com,finance,3609
+morningstar.com,finance,3618
+nhl.com,sports,3626
+gap.com,retail,3637
+expressvpn.com,technology and telecom,3643
+digitaltrends.com,news,3651
+hotels.com,travel,3668
+salon.com,news,3691
+boston.com,news,3693
+lonelyplanet.com,travel,3700
+carfax.com,automotive,3715
+mercari.com,retail,3718
+bostonglobe.com,news,3721
+nydailynews.com,news,3733
+uniqlo.com,retail,3740
+chron.com,news,3796
+cvs.com,retail,3814
+match.com,lifestyle,3828
+poshmark.com,retail,3833
+venmo.com,finance,3846
+harpersbazaar.com,lifestyle,3857
+tubitv.com,entertainment,3917
+chewy.com,retail,3928
+dyson.com,retail,3968
+menshealth.com,health,3998
+gamestop.com,retail,4022
+iherb.com,health,4035
+seekingalpha.com,finance,4049
+screenrant.com,entertainment,4056
+southwest.com,travel,4077
+progressive.com,finance,4128
+nbcsports.com,sports,4151
+seattletimes.com,news,4170
+etrade.com,finance,4172
+cargurus.com,automotive,4174
+fitbit.com,retail,4181
+victoriassecret.com,retail,4233
+creditkarma.com,finance,4283
+trulia.com,real estate,4302
+ew.com,news,4354
+michaels.com,retail,4412
+kia.com,automotive,4434
+verywellhealth.com,health,4436
+foxsports.com,sports,4449
+dickssportinggoods.com,retail,4467
+homes.com,real estate,4490
+opentable.com,food,4496
+revolve.com,retail,4500
+myfitnesspal.com,health,4536
+usaa.com,finance,4542
+southernliving.com,lifestyle,4548
+tomsguide.com,news,4578
+aetna.com,health,4606
+barrons.com,news,4616
+priceline.com,travel,4671
+theknot.com,lifestyle,4675
+carnival.com,travel,4677
+compass.com,real estate,4713
+verywellmind.com,health,4721
+ulta.com,retail,4726
+thestreet.com,news,4743
+collider.com,entertainment,4758
+kayak.com,travel,4783
+eatingwell.com,food,4828
+kroger.com,retail,4846
+shutterfly.com,retail,4847
+nerdwallet.com,finance,4856
+qvc.com,retail,4868
+cars.com,automotive,4871
+rei.com,retail,4872
+vistaprint.com,retail,4910
+viator.com,travel,4920
+jcpenney.com,retail,4972
+msnbc.com,news,4987
+pcgamer.com,entertainment,4998
+draftkings.com,sports,4999
+apartments.com,real estate,5004
+dominos.com,food,5024
+sephora.com,retail,5036
+washingtontimes.com,news,5048
+everydayhealth.com,health,5064
+autotrader.com,automotive,5071
+stubhub.com,entertainment,5096
+polygon.com,entertainment,5126
+gq.com,lifestyle,5128
+zappos.com,retail,5129
+247sports.com,sports,5144
+fanatics.com,retail,5155
+drugs.com,health,5179
+kbb.com,automotive,5186
+lululemon.com,retail,5194
+lyft.com,travel,5224
+nordstrom.com,retail,5248
+bankrate.com,finance,5271
+kotaku.com,entertainment,5297
+miamiherald.com,news,5306
+bookshop.org,retail,5338
+hgtv.com,lifestyle,5343
+breitbart.com,news,5348
+mercurynews.com,news,5349
+architecturaldigest.com,lifestyle,5351
+experian.com,finance,5366
+bleacherreport.com,sports,5400
+cbr.com,entertainment,5403
+caranddriver.com,automotive,5409
+kw.com,real estate,5413
+monster.com,jobs and education,5434
+newegg.com,retail,5517
+pagesix.com,news,5533
+swarovski.com,retail,5552
+carmax.com,automotive,5591
+angi.com,lifestyle,5595
+dallasnews.com,news,5598
+tractorsupply.com,retail,5641
+startribune.com,news,5670
+betterhelp.com,health,5684
+royalcaribbean.com,travel,5694
+skechers.com,retail,5699
+harborfreight.com,retail,5707
+sling.com,entertainment,5733
+menards.com,retail,5760
+puma.com,retail,5787
+nj.com,news,5827
+ziprecruiter.com,jobs and education,5861
+eonline.com,news,5879
+travelandleisure.com,travel,5895
+thriftbooks.com,retail,5913
+cigna.com,health,5931
+edmunds.com,automotive,5965
+honda.com,automotive,5972
+thespruce.com,lifestyle,5984
+afterpay.com,finance,6044
+denverpost.com,news,6047
+womenshealthmag.com,health,6121
+torrid.com,retail,6158
+statefarm.com,finance,6193
+fandango.com,entertainment,6197
+inquirer.com,news,6235
+fourseasons.com,travel,6238
+oreillyauto.com,retail,6265
+td.com,finance,6294
+vulture.com,entertainment,6337
+marthastewart.com,lifestyle,6350
+wyndhamhotels.com,travel,6375
+sandiegouniontribune.com,news,6384
+azcentral.com,news,6393
+goodrx.com,health,6397
+oregonlive.com,news,6407
+usbank.com,finance,6433
+academy.com,retail,6445
+hobbylobby.com,retail,6449
+sfchronicle.com,news,6502
+tacobell.com,food,6506
+sbnation.com,sports,6577
+freep.com,news,6647
+buzzfeednews.com,news,6666
+sofi.com,finance,6692
+carvana.com,automotive,6854
+bhphotovideo.com,retail,6896
+delish.com,food,6997
+cricketwireless.com,technology and telecom,7054
+stockx.com,retail,7114
+health.com,health,7121
+gopro.com,retail,7136
+cntraveler.com,travel,7141
+thredup.com,retail,7161
+ajc.com,news,7238
+baltimoresun.com,news,7264
+cleveland.com,news,7343
+hottopic.com,retail,7440
+therealreal.com,retail,7567
+washingtonexaminer.com,news,7663
+thekitchn.com,food,7691
+thecut.com,lifestyle,7695
+pnc.com,finance,7752
+bedbathandbeyond.com,retail,7812
+pitchfork.com,entertainment,7822
+cash.app,finance,7854
+thesaurus.com,lifestyle,7987
+truecar.com,automotive,8021
+mlive.com,news,8059
+bhg.com,lifestyle,8087
+realsimple.com,lifestyle,8144
+grubhub.com,food,8269
+rd.com,lifestyle,8335
+spirithalloween.com,retail,8384
+truist.com,finance,8393
+metacritic.com,entertainment,8463
+autozone.com,retail,8488
+instyle.com,lifestyle,8494
+nationalreview.com,news,8540
+homeadvisor.com,lifestyle,8842
+refinery29.com,lifestyle,8855
+al.com,news,8874
+popsugar.com,lifestyle,8910
+wish.com,retail,8936
+staples.com,retail,8979
+patagonia.com,retail,8981
+thumbtack.com,lifestyle,8993
+bose.com,retail,9089
+seriouseats.com,food,9303
+theweek.com,news,9395
+wholefoodsmarket.com,retail,9429
+alaskaair.com,travel,9444
+petsmart.com,retail,9513
+acehardware.com,retail,9803
+medicinenet.com,health,9834
+glamour.com,lifestyle,10100
+rent.com,real estate,10125
+officedepot.com,retail,10213
+choicehotels.com,travel,10262
+loopnet.com,real estate,10272
+directv.com,entertainment,10273
+apartmenttherapy.com,lifestyle,10350
+hsn.com,retail,10424
+jetblue.com,travel,10455
+sleepnumber.com,retail,10504
+newsmax.com,news,10636
+equifax.com,finance,10670
+weightwatchers.com,health,10672
+zola.com,lifestyle,10679
+coach.com,retail,10713
+ocregister.com,news,10714
+bonappetit.com,food,10716
+usmagazine.com,news,10776
+healthgrades.com,health,10838
+blueapron.com,food,10916
+petco.com,retail,10959
+tasteofhome.com,food,11027
+abercrombie.com,retail,11255
+sacbee.com,news,11276
+seatgeek.com,entertainment,11284
+tampabay.com,news,11298
+neimanmarcus.com,retail,11333
+amtrak.com,travel,11517
+parents.com,lifestyle,11532
+potterybarn.com,retail,11555
+amctheatres.com,entertainment,11573
+hertz.com,travel,11574
+bestwestern.com,travel,11585
+jalopnik.com,automotive,11611
+chegg.com,jobs and education,11613
+levi.com,retail,11641
+self.com,health,11707
+allure.com,lifestyle,11762
+nordstromrack.com,retail,11768
+travelocity.com,travel,11777
+anthropologie.com,retail,11788
+hollisterco.com,retail,11850

@@ -1,0 +1,776 @@
+site,category
+nytimes.com,news
+washingtonpost.com,news
+cnn.com,news
+foxnews.com,news
+latimes.com,news
+sfgate.com,news
+usatoday.com,news
+wsj.com,news
+nypost.com,news
+nbcnews.com,news
+cbsnews.com,news
+abcnews.go.com,news
+huffpost.com,news
+businessinsider.com,news
+forbes.com,news
+bloomberg.com,news
+cnbc.com,news
+reuters.com,news
+apnews.com,news
+theatlantic.com,news
+newyorker.com,news
+time.com,news
+newsweek.com,news
+politico.com,news
+thehill.com,news
+axios.com,news
+vox.com,news
+slate.com,news
+salon.com,news
+thedailybeast.com,news
+buzzfeed.com,news
+buzzfeednews.com,news
+vice.com,news
+wired.com,news
+theverge.com,news
+techcrunch.com,news
+engadget.com,news
+gizmodo.com,news
+mashable.com,news
+arstechnica.com,news
+cnet.com,news
+zdnet.com,news
+pcmag.com,news
+tomsguide.com,news
+techradar.com,news
+digitaltrends.com,news
+fortune.com,news
+marketwatch.com,news
+barrons.com,news
+fastcompany.com,news
+inc.com,news
+entrepreneur.com,news
+chicagotribune.com,news
+nydailynews.com,news
+bostonglobe.com,news
+boston.com,news
+sfchronicle.com,news
+seattletimes.com,news
+denverpost.com,news
+dallasnews.com,news
+houstonchronicle.com,news
+chron.com,news
+miamiherald.com,news
+ajc.com,news
+startribune.com,news
+inquirer.com,news
+azcentral.com,news
+freep.com,news
+oregonlive.com,news
+nj.com,news
+al.com,news
+cleveland.com,news
+mlive.com,news
+sacbee.com,news
+mercurynews.com,news
+ocregister.com,news
+sandiegouniontribune.com,news
+baltimoresun.com,news
+orlandosentinel.com,news
+tampabay.com,news
+dailymail.com,news
+theguardian.com,news
+independent.com,news
+usnews.com,news
+nationalreview.com,news
+breitbart.com,news
+dailywire.com,news
+washingtonexaminer.com,news
+washingtontimes.com,news
+newsmax.com,news
+msnbc.com,news
+today.com,news
+people.com,news
+tmz.com,news
+eonline.com,news
+usmagazine.com,news
+variety.com,news
+hollywoodreporter.com,news
+deadline.com,news
+rollingstone.com,news
+ew.com,news
+pagesix.com,news
+yahoo.com,news
+msn.com,news
+aol.com,news
+drudgereport.com,news
+realclearpolitics.com,news
+thestreet.com,news
+qz.com,news
+theweek.com,news
+amazon.com,retail
+walmart.com,retail
+target.com,retail
+bestbuy.com,retail
+homedepot.com,retail
+lowes.com,retail
+costco.com,retail
+samsclub.com,retail
+ebay.com,retail
+etsy.com,retail
+wayfair.com,retail
+macys.com,retail
+kohls.com,retail
+nordstrom.com,retail
+nordstromrack.com,retail
+jcpenney.com,retail
+dillards.com,retail
+bloomingdales.com,retail
+saksfifthavenue.com,retail
+neimanmarcus.com,retail
+sephora.com,retail
+ulta.com,retail
+nike.com,retail
+adidas.com,retail
+underarmour.com,retail
+lululemon.com,retail
+gap.com,retail
+oldnavy.com,retail
+bananarepublic.com,retail
+ae.com,retail
+abercrombie.com,retail
+hollisterco.com,retail
+urbanoutfitters.com,retail
+anthropologie.com,retail
+freepeople.com,retail
+jcrew.com,retail
+uniqlo.com,retail
+hm.com,retail
+zara.com,retail
+forever21.com,retail
+shein.com,retail
+temu.com,retail
+asos.com,retail
+revolve.com,retail
+zappos.com,retail
+dsw.com,retail
+footlocker.com,retail
+finishline.com,retail
+dickssportinggoods.com,retail
+academy.com,retail
+rei.com,retail
+basspro.com,retail
+cabelas.com,retail
+patagonia.com,retail
+thenorthface.com,retail
+columbia.com,retail
+llbean.com,retail
+landsend.com,retail
+levi.com,retail
+victoriassecret.com,retail
+bathandbodyworks.com,retail
+ikea.com,retail
+overstock.com,retail
+bedbathandbeyond.com,retail
+crateandbarrel.com,retail
+potterybarn.com,retail
+williams-sonoma.com,retail
+westelm.com,retail
+cb2.com,retail
+rh.com,retail
+ashleyfurniture.com,retail
+article.com,retail
+pier1.com,retail
+homegoods.com,retail
+tjmaxx.tjx.com,retail
+marshalls.com,retail
+burlington.com,retail
+ross.com,retail
+biglots.com,retail
+dollargeneral.com,retail
+dollartree.com,retail
+fivebelow.com,retail
+michaels.com,retail
+joann.com,retail
+hobbylobby.com,retail
+staples.com,retail
+officedepot.com,retail
+newegg.com,retail
+bhphotovideo.com,retail
+microcenter.com,retail
+gamestop.com,retail
+chewy.com,retail
+petsmart.com,retail
+petco.com,retail
+cvs.com,retail
+walgreens.com,retail
+riteaid.com,retail
+kroger.com,retail
+safeway.com,retail
+albertsons.com,retail
+publix.com,retail
+wholefoodsmarket.com,retail
+traderjoes.com,retail
+aldi.us,retail
+heb.com,retail
+meijer.com,retail
+wegmans.com,retail
+instacart.com,retail
+acehardware.com,retail
+menards.com,retail
+harborfreight.com,retail
+tractorsupply.com,retail
+autozone.com,retail
+advanceautoparts.com,retail
+oreillyauto.com,retail
+napaonline.com,retail
+rockauto.com,retail
+qvc.com,retail
+hsn.com,retail
+zulily.com,retail
+wish.com,retail
+aliexpress.com,retail
+poshmark.com,retail
+mercari.com,retail
+thredup.com,retail
+therealreal.com,retail
+stockx.com,retail
+goat.com,retail
+fanatics.com,retail
+barnesandnoble.com,retail
+thriftbooks.com,retail
+bookshop.org,retail
+warbyparker.com,retail
+glossier.com,retail
+fentybeauty.com,retail
+allbirds.com,retail
+casper.com,retail
+purple.com,retail
+tempurpedic.com,retail
+sleepnumber.com,retail
+mattressfirm.com,retail
+bluenile.com,retail
+kay.com,retail
+zales.com,retail
+tiffany.com,retail
+pandora.net,retail
+swarovski.com,retail
+coach.com,retail
+katespade.com,retail
+michaelkors.com,retail
+ralphlauren.com,retail
+tommy.com,retail
+calvinklein.us,retail
+guess.com,retail
+express.com,retail
+torrid.com,retail
+hottopic.com,retail
+pacsun.com,retail
+zumiez.com,retail
+vans.com,retail
+converse.com,retail
+newbalance.com,retail
+puma.com,retail
+reebok.com,retail
+skechers.com,retail
+crocs.com,retail
+ugg.com,retail
+drmartens.com,retail
+timberland.com,retail
+carhartt.com,retail
+duluthtrading.com,retail
+eddiebauer.com,retail
+orvis.com,retail
+backcountry.com,retail
+moosejaw.com,retail
+1800flowers.com,retail
+ftd.com,retail
+shutterfly.com,retail
+vistaprint.com,retail
+partycity.com,retail
+spirithalloween.com,retail
+build.com,retail
+lumberliquidators.com,retail
+sherwin-williams.com,retail
+containerstore.com,retail
+worldmarket.com,retail
+athome.com,retail
+kirklands.com,retail
+tuesdaymorning.com,retail
+bjs.com,retail
+shop.app,retail
+dell.com,retail
+hp.com,retail
+lenovo.com,retail
+apple.com,retail
+samsung.com,retail
+sony.com,retail
+lg.com,retail
+bose.com,retail
+sonos.com,retail
+gopro.com,retail
+fitbit.com,retail
+garmin.com,retail
+dyson.com,retail
+sharkninja.com,retail
+kitchenaid.com,retail
+whirlpool.com,retail
+webmd.com,health
+healthline.com,health
+medicalnewstoday.com,health
+verywellhealth.com,health
+verywellmind.com,health
+verywellfit.com,health
+everydayhealth.com,health
+drugs.com,health
+rxlist.com,health
+medscape.com,health
+goodrx.com,health
+zocdoc.com,health
+healthgrades.com,health
+vitals.com,health
+psychologytoday.com,health
+prevention.com,health
+menshealth.com,health
+womenshealthmag.com,health
+self.com,health
+shape.com,health
+health.com,health
+livestrong.com,health
+mindbodygreen.com,health
+wellandgood.com,health
+medicinenet.com,health
+emedicinehealth.com,health
+singlecare.com,health
+teladoc.com,health
+hims.com,health
+forhers.com,health
+ro.co,health
+betterhelp.com,health
+talkspace.com,health
+noom.com,health
+weightwatchers.com,health
+myfitnesspal.com,health
+peloton.com,health
+planetfitness.com,health
+orangetheory.com,health
+23andme.com,health
+ancestry.com,health
+labcorp.com,health
+questdiagnostics.com,health
+uhc.com,health
+aetna.com,health
+cigna.com,health
+humana.com,health
+anthem.com,health
+gnc.com,health
+vitaminshoppe.com,health
+iherb.com,health
+1800contacts.com,health
+expedia.com,travel
+booking.com,travel
+tripadvisor.com,travel
+hotels.com,travel
+priceline.com,travel
+kayak.com,travel
+orbitz.com,travel
+travelocity.com,travel
+hotwire.com,travel
+trivago.com,travel
+airbnb.com,travel
+vrbo.com,travel
+marriott.com,travel
+hilton.com,travel
+hyatt.com,travel
+ihg.com,travel
+wyndhamhotels.com,travel
+choicehotels.com,travel
+bestwestern.com,travel
+fourseasons.com,travel
+delta.com,travel
+united.com,travel
+aa.com,travel
+southwest.com,travel
+jetblue.com,travel
+alaskaair.com,travel
+spirit.com,travel
+flyfrontier.com,travel
+hawaiianairlines.com,travel
+allegiantair.com,travel
+enterprise.com,travel
+hertz.com,travel
+avis.com,travel
+budget.com,travel
+nationalcar.com,travel
+turo.com,travel
+uber.com,travel
+lyft.com,travel
+amtrak.com,travel
+greyhound.com,travel
+carnival.com,travel
+royalcaribbean.com,travel
+ncl.com,travel
+princess.com,travel
+disneyworld.disney.go.com,travel
+universalorlando.com,travel
+sixflags.com,travel
+seaworld.com,travel
+viator.com,travel
+getyourguide.com,travel
+skyscanner.com,travel
+cheapoair.com,travel
+cheapflights.com,travel
+lonelyplanet.com,travel
+travelandleisure.com,travel
+cntraveler.com,travel
+thepointsguy.com,travel
+koa.com,travel
+zillow.com,real estate
+realtor.com,real estate
+redfin.com,real estate
+trulia.com,real estate
+apartments.com,real estate
+rent.com,real estate
+apartmentguide.com,real estate
+zumper.com,real estate
+hotpads.com,real estate
+homes.com,real estate
+compass.com,real estate
+coldwellbanker.com,real estate
+century21.com,real estate
+remax.com,real estate
+kw.com,real estate
+loopnet.com,real estate
+opendoor.com,real estate
+rocketmortgage.com,real estate
+yelp.com,food
+allrecipes.com,food
+foodnetwork.com,food
+epicurious.com,food
+bonappetit.com,food
+seriouseats.com,food
+delish.com,food
+tasteofhome.com,food
+simplyrecipes.com,food
+eatingwell.com,food
+food.com,food
+thekitchn.com,food
+budgetbytes.com,food
+doordash.com,food
+grubhub.com,food
+ubereats.com,food
+postmates.com,food
+opentable.com,food
+resy.com,food
+mcdonalds.com,food
+starbucks.com,food
+subway.com,food
+chipotle.com,food
+dominos.com,food
+pizzahut.com,food
+papajohns.com,food
+tacobell.com,food
+wendys.com,food
+bk.com,food
+chick-fil-a.com,food
+kfc.com,food
+dunkindonuts.com,food
+panerabread.com,food
+olivegarden.com,food
+applebees.com,food
+chilis.com,food
+ihop.com,food
+dennys.com,food
+buffalowildwings.com,food
+redlobster.com,food
+outback.com,food
+cheesecakefactory.com,food
+shakeshack.com,food
+fiveguys.com,food
+in-n-out.com,food
+sonicdrivein.com,food
+arbys.com,food
+popeyes.com,food
+jimmyjohns.com,food
+jerseymikes.com,food
+hellofresh.com,food
+blueapron.com,food
+homechef.com,food
+factor75.com,food
+drizly.com,food
+totalwine.com,food
+bankofamerica.com,finance
+chase.com,finance
+wellsfargo.com,finance
+citi.com,finance
+capitalone.com,finance
+usbank.com,finance
+pnc.com,finance
+truist.com,finance
+td.com,finance
+discover.com,finance
+americanexpress.com,finance
+synchrony.com,finance
+ally.com,finance
+sofi.com,finance
+chime.com,finance
+paypal.com,finance
+venmo.com,finance
+cash.app,finance
+stripe.com,finance
+squareup.com,finance
+affirm.com,finance
+klarna.com,finance
+afterpay.com,finance
+robinhood.com,finance
+fidelity.com,finance
+schwab.com,finance
+vanguard.com,finance
+etrade.com,finance
+tdameritrade.com,finance
+coinbase.com,finance
+kraken.com,finance
+creditkarma.com,finance
+nerdwallet.com,finance
+bankrate.com,finance
+lendingtree.com,finance
+credit.com,finance
+experian.com,finance
+equifax.com,finance
+transunion.com,finance
+intuit.com,finance
+turbotax.intuit.com,finance
+hrblock.com,finance
+mint.com,finance
+investopedia.com,finance
+fool.com,finance
+seekingalpha.com,finance
+morningstar.com,finance
+zacks.com,finance
+kiplinger.com,finance
+geico.com,finance
+progressive.com,finance
+statefarm.com,finance
+allstate.com,finance
+libertymutual.com,finance
+farmers.com,finance
+usaa.com,finance
+nationwide.com,finance
+travelers.com,finance
+thezebra.com,finance
+policygenius.com,finance
+lemonade.com,finance
+quickenloans.com,finance
+netflix.com,entertainment
+hulu.com,entertainment
+disneyplus.com,entertainment
+max.com,entertainment
+peacocktv.com,entertainment
+paramountplus.com,entertainment
+spotify.com,entertainment
+pandora.com,entertainment
+iheart.com,entertainment
+soundcloud.com,entertainment
+twitch.tv,entertainment
+imdb.com,entertainment
+rottentomatoes.com,entertainment
+metacritic.com,entertainment
+fandango.com,entertainment
+ticketmaster.com,entertainment
+stubhub.com,entertainment
+seatgeek.com,entertainment
+livenation.com,entertainment
+eventbrite.com,entertainment
+amctheatres.com,entertainment
+regmovies.com,entertainment
+cinemark.com,entertainment
+ign.com,entertainment
+gamespot.com,entertainment
+polygon.com,entertainment
+kotaku.com,entertainment
+pcgamer.com,entertainment
+fandom.com,entertainment
+roblox.com,entertainment
+epicgames.com,entertainment
+ea.com,entertainment
+playstation.com,entertainment
+xbox.com,entertainment
+nintendo.com,entertainment
+steampowered.com,entertainment
+tvguide.com,entertainment
+screenrant.com,entertainment
+cbr.com,entertainment
+collider.com,entertainment
+vulture.com,entertainment
+pitchfork.com,entertainment
+billboard.com,entertainment
+genius.com,entertainment
+goodreads.com,entertainment
+audible.com,entertainment
+crunchyroll.com,entertainment
+tubitv.com,entertainment
+pluto.tv,entertainment
+sling.com,entertainment
+directv.com,entertainment
+dish.com,entertainment
+siriusxm.com,entertainment
+espn.com,sports
+cbssports.com,sports
+nbcsports.com,sports
+foxsports.com,sports
+bleacherreport.com,sports
+si.com,sports
+theathletic.com,sports
+nfl.com,sports
+nba.com,sports
+mlb.com,sports
+nhl.com,sports
+mlssoccer.com,sports
+ufc.com,sports
+wwe.com,sports
+pgatour.com,sports
+nascar.com,sports
+draftkings.com,sports
+fanduel.com,sports
+247sports.com,sports
+rivals.com,sports
+sbnation.com,sports
+golfdigest.com,sports
+weather.com,lifestyle
+accuweather.com,lifestyle
+wunderground.com,lifestyle
+bhg.com,lifestyle
+marthastewart.com,lifestyle
+realsimple.com,lifestyle
+goodhousekeeping.com,lifestyle
+southernliving.com,lifestyle
+housebeautiful.com,lifestyle
+architecturaldigest.com,lifestyle
+hgtv.com,lifestyle
+thespruce.com,lifestyle
+apartmenttherapy.com,lifestyle
+vogue.com,lifestyle
+elle.com,lifestyle
+cosmopolitan.com,lifestyle
+glamour.com,lifestyle
+allure.com,lifestyle
+harpersbazaar.com,lifestyle
+gq.com,lifestyle
+esquire.com,lifestyle
+instyle.com,lifestyle
+refinery29.com,lifestyle
+popsugar.com,lifestyle
+byrdie.com,lifestyle
+thecut.com,lifestyle
+parents.com,lifestyle
+babycenter.com,lifestyle
+whattoexpect.com,lifestyle
+thebump.com,lifestyle
+theknot.com,lifestyle
+weddingwire.com,lifestyle
+zola.com,lifestyle
+dictionary.com,lifestyle
+merriam-webster.com,lifestyle
+thesaurus.com,lifestyle
+britannica.com,lifestyle
+howstuffworks.com,lifestyle
+wikihow.com,lifestyle
+lifehacker.com,lifestyle
+rd.com,lifestyle
+nationalgeographic.com,lifestyle
+history.com,lifestyle
+match.com,lifestyle
+eharmony.com,lifestyle
+angi.com,lifestyle
+thumbtack.com,lifestyle
+homeadvisor.com,lifestyle
+nextdoor.com,lifestyle
+care.com,lifestyle
+rover.com,lifestyle
+cars.com,automotive
+autotrader.com,automotive
+carvana.com,automotive
+carmax.com,automotive
+cargurus.com,automotive
+edmunds.com,automotive
+kbb.com,automotive
+truecar.com,automotive
+carfax.com,automotive
+caranddriver.com,automotive
+motortrend.com,automotive
+roadandtrack.com,automotive
+jalopnik.com,automotive
+ford.com,automotive
+chevrolet.com,automotive
+toyota.com,automotive
+honda.com,automotive
+nissanusa.com,automotive
+hyundaiusa.com,automotive
+kia.com,automotive
+subaru.com,automotive
+jeep.com,automotive
+tesla.com,automotive
+bmwusa.com,automotive
+mbusa.com,automotive
+indeed.com,jobs and education
+glassdoor.com,jobs and education
+ziprecruiter.com,jobs and education
+monster.com,jobs and education
+careerbuilder.com,jobs and education
+simplyhired.com,jobs and education
+upwork.com,jobs and education
+fiverr.com,jobs and education
+coursera.org,jobs and education
+udemy.com,jobs and education
+skillshare.com,jobs and education
+masterclass.com,jobs and education
+chegg.com,jobs and education
+quizlet.com,jobs and education
+coursehero.com,jobs and education
+duolingo.com,jobs and education
+rosettastone.com,jobs and education
+niche.com,jobs and education
+princetonreview.com,jobs and education
+kaptest.com,jobs and education
+att.com,technology and telecom
+verizon.com,technology and telecom
+t-mobile.com,technology and telecom
+xfinity.com,technology and telecom
+spectrum.com,technology and telecom
+cox.com,technology and telecom
+mintmobile.com,technology and telecom
+boostmobile.com,technology and telecom
+cricketwireless.com,technology and telecom
+dropbox.com,technology and telecom
+zoom.us,technology and telecom
+slack.com,technology and telecom
+canva.com,technology and telecom
+grammarly.com,technology and telecom
+squarespace.com,technology and telecom
+wix.com,technology and telecom
+godaddy.com,technology and telecom
+shopify.com,technology and telecom
+mailchimp.com,technology and telecom
+hubspot.com,technology and telecom
+salesforce.com,technology and telecom
+adobe.com,technology and telecom
+norton.com,technology and telecom
+mcafee.com,technology and telecom
+nordvpn.com,technology and telecom
+expressvpn.com,technology and telecom
+lastpass.com,technology and telecom
+1password.com,technology and telecom
+ring.com,technology and telecom
+speedtest.net,technology and telecom
+stackoverflow.com,technology and telecom
+quora.com,technology and telecom
+medium.com,technology and telecom
+substack.com,technology and telecom
+tumblr.com,technology and telecom
+imgur.com,technology and telecom
+giphy.com,technology and telecom
+craigslist.org,technology and telecom
+offerup.com,technology and telecom
+ups.com,technology and telecom
+fedex.com,technology and telecom

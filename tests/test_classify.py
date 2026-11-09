@@ -59,3 +59,25 @@ def test_tracking_cookies():
     custom = CookieDB()
     custom.add("foo*")
     assert custom.name_is_tracking("foobar")
+
+
+def test_canonical_owner_merges_company_names():
+    from gpcheck.classify.trackers import canonical_owner
+
+    assert canonical_owner("Google LLC") == canonical_owner("Google Ads") == canonical_owner("Google") == "Google"
+    assert canonical_owner("Facebook, Inc.") == "Meta"
+    assert canonical_owner("Smartadserver S.A.S") == "Smartadserver"
+    assert canonical_owner("Tapad, Inc.") == "Tapad"
+    assert canonical_owner("example.com") == "example.com"
+
+
+def test_build_site_list(tmp_path):
+    from gpcheck.lists import build_site_list
+
+    tranco = tmp_path / "tranco.csv"
+    tranco.write_text("rank,domain\n1,cdn.net\n2,shop.com\n3,news.com\n4,go.com\n", encoding="utf-8")
+    cands = tmp_path / "cands.csv"
+    cands.write_text("site,category\nnews.com,news\nabcnews.go.com,news\nother.go.com,travel\n"
+                     "shop.com,retail\nunranked.com,retail\n", encoding="utf-8")
+    assert build_site_list(cands, tranco, 2) == [(2, "shop.com", "retail"), (3, "news.com", "news")]
+    assert [s for _, s, _ in build_site_list(cands, tranco, 9)] == ["shop.com", "news.com", "abcnews.go.com"]

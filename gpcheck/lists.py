@@ -51,3 +51,22 @@ def fetch_tranco(dest: str | Path, top: int) -> Path:
                 break
             w.writerow(row)
     return dest
+
+
+def build_site_list(candidates: str | Path, tranco: str | Path, n: int) -> list[tuple[int, str, str]]:
+    """Rank a hand-drawn candidate list (CSV: site,category) by Tranco and keep the top n.
+
+    Tranco's top sites are mostly infrastructure (CDNs, DNS, APIs), so the study sample starts from
+    a candidate list of consumer-facing sites; Tranco decides which of them are popular enough.
+    Returns (rank, site, category), one site per registrable domain, most popular first."""
+    from .classify.domains import etld1
+
+    with open(tranco, newline="", encoding="utf-8") as fh:
+        rank = {row["domain"]: int(row["rank"]) for row in csv.DictReader(fh)}
+    chosen: dict[str, tuple[int, str, str]] = {}
+    with open(candidates, newline="", encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            site, domain = row["site"].strip().lower(), etld1(row["site"].strip())
+            if domain in rank and domain not in chosen:
+                chosen[domain] = (rank[domain], site, row["category"].strip())
+    return sorted(chosen.values())[:n]

@@ -169,5 +169,31 @@ def lists(dest: Path = typer.Option(Path("data/lists")),
         typer.echo(f"saved {fetch_tranco(Path('data/sites') / f'tranco_top{tranco}.csv', tranco)}")
 
 
+@app.command()
+def sites(
+    candidates: Path = typer.Option(Path("data/sites/candidates.csv"), help="Hand-drawn CSV: site,category"),
+    n: int = typer.Option(500, help="Number of sites to keep"),
+    out: Path = typer.Option(Path("data/sites/study_500.txt"), help="Site list for `gpcheck crawl`"),
+    categories: Path = typer.Option(Path("data/sites/study_categories.csv"), help="Matching site,category file"),
+):
+    """Build the study sample: the candidates that rank highest in the Tranco list."""
+    import csv
+
+    from .lists import build_site_list, fetch_tranco
+
+    tranco = Path("data/sites/tranco_top1000000.csv")
+    if not tranco.exists():
+        typer.echo("Downloading the Tranco list...")
+        fetch_tranco(tranco, 1_000_000)
+    rows = build_site_list(candidates, tranco, n)
+    out.write_text("# Study sample: candidates.csv ranked by Tranco (built by `gpcheck sites`)\n"
+                   + "".join(f"{site}\n" for _, site, _ in rows), encoding="utf-8")
+    with categories.open("w", newline="", encoding="utf-8") as fh:
+        writer = csv.writer(fh)
+        writer.writerow(["site", "category", "tranco_rank"])
+        writer.writerows([site, category, rank] for rank, site, category in rows)
+    typer.echo(f"Wrote {len(rows)} sites to {out} and {categories} (Tranco ranks {rows[0][0]} to {rows[-1][0]})")
+
+
 if __name__ == "__main__":
     app()
