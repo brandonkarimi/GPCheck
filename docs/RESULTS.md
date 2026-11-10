@@ -128,7 +128,7 @@ Ad-funded publishers (news, lifestyle, health) mostly declare an opt-out and red
 
 ## Limitations
 
-- **Not validated by hand.** The verdicts are automated. `gpcheck sample` and [MANUAL_CHECK.md](MANUAL_CHECK.md) support a blind manual check, which was not carried out for this study.
+- **Not validated by hand.** The verdicts are automated and no site was checked manually.
 - **Bot protection removes 27% of the sample, and not at random.** Large retailers and travel sites are over-represented among inconclusive sites, so the shares above describe sites that let an automated browser in.
 - **Only browser-visible behavior is measured.** Server-to-server sharing is invisible, so a clean result is not proof of compliance. A persisting tracker request is also not proof of a sale.
 - **The sample is hand-drawn.** Sites come from a candidate list of well-known US consumer sites ranked by Tranco, not a random draw from the web.

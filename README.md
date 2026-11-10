@@ -39,17 +39,8 @@ To break verdicts down by site category, pass a `site,category` CSV:
 gpcheck analyze --categories data/sites/sample_categories.csv
 ```
 
-To validate the automated verdicts by hand, draw a random sample, fill in the `manual_verdict` column while checking each site in a GPC-enabled browser, then feed the sheet back in. The report gains an agreement rate and Cohen's kappa:
-
-```bash
-gpcheck sample --n 20                 # writes results/manual_check.csv (see docs/MANUAL_CHECK.md)
-gpcheck analyze --manual results/manual_check.csv
-```
-
 How it works: [docs/METHODOLOGY.md](docs/METHODOLOGY.md)
 
 Results of the 500-site study: [docs/RESULTS.md](docs/RESULTS.md)
 
 Pilot results on 30 sites: [docs/PILOT.md](docs/PILOT.md)
-
-Checking a site by hand: [docs/MANUAL_CHECK.md](docs/MANUAL_CHECK.md)

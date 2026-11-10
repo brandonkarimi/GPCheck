@@ -51,17 +51,6 @@ def wilson(k: int, n: int, z: float = 1.96) -> tuple[float, float] | None:
     return max(0.0, (centre - half) / denom), min(1.0, (centre + half) / denom)
 
 
-def cohen_kappa(pairs: list[tuple[str, str]]) -> float | None:
-    """Agreement between two labelings beyond what chance would give."""
-    n = len(pairs)
-    if not n:
-        return None
-    observed = sum(a == b for a, b in pairs) / n
-    left, right = Counter(a for a, _ in pairs), Counter(b for _, b in pairs)
-    expected = sum(left[k] * right[k] for k in left) / (n * n)
-    return None if expected == 1 else (observed - expected) / (1 - expected)
-
-
 def load_records(path: str | Path) -> list[dict]:
     return [json.loads(line) for line in Path(path).read_text(encoding="utf-8").splitlines() if line.strip()]
 

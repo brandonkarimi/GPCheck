@@ -69,7 +69,6 @@ def analyze(
     cookie_db: Optional[Path] = typer.Option(None, help="Open Cookie Database CSV"),
     lists_dir: Optional[Path] = typer.Option(Path("data/lists"), help="Auto-load lists downloaded by `gpcheck lists`"),
     categories: Optional[Path] = typer.Option(None, help="CSV with columns site,category for a per-category table"),
-    manual: Optional[Path] = typer.Option(None, help="Hand-checked sheet from `gpcheck sample` (site,manual_verdict)"),
     policy: Optional[Path] = typer.Option(Path("results/policy.jsonl"), help="Output of `gpcheck policy` (used if it exists)"),
 ):
     """Classify trackers and cookies, compute verdicts and statistics, write a report."""
@@ -91,7 +90,6 @@ def analyze(
     result = run_analyze(crawl_files or [Path("results/crawl.jsonl")], out,
                          Classifier(build_tracker_list(tracker_paths), db),
                          categories=load_site_column(categories, "category") if categories else None,
-                         manual=load_site_column(manual, "manual_verdict") if manual else None,
                          policy=load_records(policy) if policy and policy.exists() else None)
     typer.echo(f"Wrote {out}/report.md, CSV tables and gpcheck.duckdb")
     typer.echo(json.dumps(result["stats"], indent=2))
@@ -115,25 +113,6 @@ def policy(
         site_list = site_list[:limit]
     asyncio.run(check_policies(site_list, _cfg(0, 0, workers, headful, chromium, None), out, log=typer.echo))
     typer.echo(f"Wrote {out}; `gpcheck analyze` will pick it up.")
-
-
-@app.command()
-def sample(
-    sites_csv: Path = typer.Argument(Path("results/analysis/sites.csv"), help="sites.csv written by `gpcheck analyze`"),
-    out: Path = typer.Option(Path("results/manual_check.csv"), help="Sheet to fill in by hand"),
-    n: int = typer.Option(20, help="Number of sites to draw"),
-    seed: int = typer.Option(0, help="Seed for the random draw"),
-):
-    """Draw a random sample of sites to verify by hand in a GPC-enabled browser."""
-    from .analysis.report import VERDICT_TEXT, write_sample
-
-    if out.exists():
-        typer.secho(f"{out} already exists; not overwriting (it may hold your manual verdicts).", fg=typer.colors.RED)
-        raise typer.Exit(1)
-    chosen = write_sample(sites_csv, out, n, seed)
-    typer.echo(f"Wrote {len(chosen)} sites to {out}. Fill in manual_verdict with one of: "
-               f"{', '.join(k for k in VERDICT_TEXT if k != 'inconclusive')}; "
-               f"then run `gpcheck analyze --manual {out}`.")
 
 
 @app.command("check-gpc")

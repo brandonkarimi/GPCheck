@@ -125,7 +125,6 @@ The tool can compare locations, but this study does not: it needs the same crawl
 ## Validation
 
 - **Test sites:** local fixture sites with known behavior (honors, ignores, declares but still tracks, never tracks, a bot wall, a working banner, a broken banner). `gpcheck selftest` crawls them and checks every verdict.
-- **Manual check:** a random sample of real sites is also inspected by hand in a GPC-enabled browser. `gpcheck sample` draws the sample without showing the automated verdicts, so the check is blind, and `gpcheck analyze --manual` reports the agreement rate and Cohen's kappa.
 
 ## Code layout
 

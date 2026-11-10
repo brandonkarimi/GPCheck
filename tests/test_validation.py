@@ -1,10 +1,9 @@
-import csv
 import json
 
 import pytest
 
-from gpcheck.analysis.metrics import Classifier, blocked_reason, cohen_kappa, wilson
-from gpcheck.analysis.report import analyze, load_site_column, write_sample
+from gpcheck.analysis.metrics import Classifier, blocked_reason, wilson
+from gpcheck.analysis.report import analyze, load_site_column
 from gpcheck.classify.cookies import seed_cookie_db
 from gpcheck.classify.trackers import build_tracker_list
 
@@ -60,33 +59,19 @@ def test_trackers_remaining(tmp_path):
     assert row["verdict"] == "honors" and row["trackers_remaining"] == 0.0
 
 
-def test_wilson_and_kappa():
+def test_wilson():
     low, high = wilson(5, 10)
     assert low == pytest.approx(0.237, abs=0.001) and high == pytest.approx(0.763, abs=0.001)
     assert wilson(0, 0) is None
-    assert cohen_kappa([("honors", "honors"), ("ignores", "ignores")]) == 1.0
-    assert cohen_kappa([("honors", "ignores"), ("ignores", "honors")]) == -1.0
 
 
-def test_categories_manual_check_and_sample(tmp_path):
+def test_categories(tmp_path):
     visits = []
     for run in range(2):
         visits += [_visit("shop.com", "A", run, True), _visit("shop.com", "B", run, False, "1YYN"),
                    _visit("news.com", "A", run, True), _visit("news.com", "B", run, True)]
     cats = tmp_path / "cats.csv"
     cats.write_text("site,category\nshop.com,retail\nhttps://www.news.com/,news\n", encoding="utf-8")
-    manual = tmp_path / "manual.csv"
-    manual.write_text("site,manual_verdict,notes\nshop.com,honors,\nnews.com,declares_only,x\n", encoding="utf-8")
-    result = _analyze(tmp_path, visits, categories=load_site_column(cats, "category"),
-                      manual=load_site_column(manual, "manual_verdict"))
+    result = _analyze(tmp_path, visits, categories=load_site_column(cats, "category"))
     assert {s["site"]: s["category"] for s in result["sites"]} == {"shop.com": "retail", "news.com": "news"}
-    assert result["validation"]["n"] == 2 and result["validation"]["agree"] == 1
-    assert result["validation"]["disagreements"][0]["site"] == "news.com"
-    report = (tmp_path / "out" / "report.md").read_text(encoding="utf-8")
-    assert "GPC verdicts by site category" in report and "agree on **1 of 2**" in report
-
-    sheet = tmp_path / "sheet.csv"
-    assert write_sample(tmp_path / "out" / "sites.csv", sheet, 5, seed=1) == ["news.com", "shop.com"]
-    with sheet.open(newline="", encoding="utf-8") as fh:
-        rows = list(csv.DictReader(fh))
-    assert all(r["manual_verdict"] == "" for r in rows) and "verdict" not in rows[0]
+    assert "GPC verdicts by site category" in (tmp_path / "out" / "report.md").read_text(encoding="utf-8")

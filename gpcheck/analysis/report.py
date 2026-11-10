@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import csv
 import json
-import random
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -13,7 +12,7 @@ import pandas as pd
 
 from ..classify.domains import etld1, host_of
 from ..classify.policy import CLAIM_TEXT, says_vs_does
-from .metrics import (Classifier, blocked_reason, cohen_kappa, load_records, paired_stats, site_verdicts, vantage_comparison,
+from .metrics import (Classifier, blocked_reason, load_records, paired_stats, site_verdicts, vantage_comparison,
                       vendor_persistence, vendor_propagation, wilson)
 
 VERDICT_TEXT = {
@@ -42,34 +41,6 @@ def load_site_column(path: str | Path, column: str) -> dict[str, str]:
                 if (row.get("site") or "").strip() and (row.get(column) or "").strip()}
 
 
-def write_sample(sites_csv: str | Path, dest: str | Path, n: int, seed: int = 0) -> list[str]:
-    """Draw a seeded random sample of sites with a verdict, for blind manual checking.
-
-    The automated verdict is deliberately left out of the sheet."""
-    with open(sites_csv, newline="", encoding="utf-8") as fh:
-        eligible = sorted({row["site"] for row in csv.DictReader(fh)
-                           if row.get("verdict") and row["verdict"] != "inconclusive"})
-    chosen = sorted(random.Random(seed).sample(eligible, min(n, len(eligible))))
-    dest = Path(dest)
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    with dest.open("w", newline="", encoding="utf-8") as fh:
-        writer = csv.writer(fh)
-        writer.writerow(["site", "manual_verdict", "notes"])
-        writer.writerows([site, "", ""] for site in chosen)
-    return chosen
-
-
-def manual_agreement(sites: list[dict], manual: dict[str, str]) -> dict:
-    """Compare automated verdicts with hand-assigned ones."""
-    pairs = [(s["site"], s["verdict"], manual[site_key(s["site"])]) for s in sites
-             if s.get("verdict") and site_key(s["site"]) in manual]
-    agree = sum(auto == hand for _, auto, hand in pairs)
-    kappa = cohen_kappa([(auto, hand) for _, auto, hand in pairs])
-    return {"n": len(pairs), "agree": agree, "kappa": None if kappa is None else round(kappa, 3),
-            "disagreements": [{"site": site, "automated": auto, "manual": hand}
-                              for site, auto, hand in pairs if auto != hand]}
-
-
 SAYS_VS_DOES_TEXT = {
     "claims_but_does_not_honor": "Policy says GPC is honored, but tracking did not drop (says vs. does gap)",
     "claim_matches_behavior": "Policy says GPC is honored, and tracking dropped",
@@ -96,7 +67,7 @@ def policy_by_site(records: list[dict]) -> dict[str, dict]:
 
 
 def analyze(input_paths, out_dir: str | Path, classifier: Classifier,
-            categories: dict[str, str] | None = None, manual: dict[str, str] | None = None,
+            categories: dict[str, str] | None = None,
             policy: list[dict] | None = None) -> dict:
     """Analyze one or more crawl files (e.g. one per state) together."""
     if isinstance(input_paths, (str, Path)):
@@ -126,7 +97,6 @@ def analyze(input_paths, out_dir: str | Path, classifier: Classifier,
     propagation = vendor_propagation(primary_visits)
     stats = {k: paired_stats(rows) for k, rows in rows_by_vantage.items()}
     comparison = vantage_comparison(rows_by_vantage) if len(by_vantage) > 1 else []
-    validation = manual_agreement(sites, manual) if manual else None
 
     all_rows = [r for rows in rows_by_vantage.values() for r in rows]
     visits_df = pd.DataFrame([{k: v for k, v in x.items() if not k.startswith("_")} |
@@ -147,8 +117,7 @@ def analyze(input_paths, out_dir: str | Path, classifier: Classifier,
     for name in ("visits", "sites", "vendors", "propagation", "vantage_comparison"):
         if not tables[name].empty:
             tables[name].to_csv(out / f"{name}.csv", index=False)
-    (out / "stats.json").write_text(json.dumps(stats | ({"manual_validation": validation} if validation else {}),
-                                               indent=2), encoding="utf-8")
+    (out / "stats.json").write_text(json.dumps(stats, indent=2), encoding="utf-8")
 
     import duckdb
     db_path = out / "gpcheck.duckdb"
@@ -164,10 +133,10 @@ def analyze(input_paths, out_dir: str | Path, classifier: Classifier,
     report = render_report(sites, vendors, stats.get(primary, paired_stats([])), primary_visits, classifier,
                            ", ".join(str(p) for p in input_paths), primary=primary,
                            propagation=propagation, comparison=comparison, vantages=sorted(by_vantage),
-                           all_stats=stats, validation=validation)
+                           all_stats=stats)
     (out / "report.md").write_text(report, encoding="utf-8")
     return {"sites": sites, "all_sites": all_rows, "vendors": vendors, "propagation": propagation,
-            "comparison": comparison, "stats": stats, "validation": validation, "out_dir": str(out)}
+            "comparison": comparison, "stats": stats, "out_dir": str(out)}
 
 
 def _fmt_p(p: float | None) -> str:
@@ -183,7 +152,7 @@ PROPAGATION_TEXT = {
 
 
 def render_report(sites, vendors, stats, visits, classifier, input_path, primary=None, propagation=(),
-                  comparison=(), vantages=(), all_stats=None, validation=None) -> str:
+                  comparison=(), vantages=(), all_stats=None) -> str:
     gpc_sites = [s for s in sites if s["verdict"] is not None]
     verdicts = Counter(s["verdict"] for s in gpc_sites)
     total = len(gpc_sites)
@@ -236,18 +205,6 @@ def render_report(sites, vendors, stats, visits, classifier, input_path, primary
         if claimed:
             lines += ["", "Sites whose policy claims to honor GPC while tracking did not drop:", ""]
             lines += [f"- **{s['site']}** (`{s['verdict']}`): \"{s['policy_evidence']}\"" for s in claimed]
-    if validation:
-        lines += ["", "## Manual validation", ""]
-        if validation["n"]:
-            ci = wilson(validation["agree"], validation["n"])
-            lines.append(f"Automated and manual verdicts agree on **{validation['agree']} of {validation['n']}** "
-                         f"hand-checked sites ({validation['agree'] / validation['n']:.0%}, 95% CI "
-                         f"{ci[0]:.0%}–{ci[1]:.0%}); Cohen's kappa = {validation['kappa']}.")
-            if validation["disagreements"]:
-                lines += ["", "| Site | Automated | Manual |", "|---|---|---|"]
-                lines += [f"| {d['site']} | `{d['automated']}` | `{d['manual']}` |" for d in validation["disagreements"]]
-        else:
-            lines.append("No hand-checked site matches a site with an automated verdict.")
     lines += [
         "", "## Paired statistics", "",
         f"- Sites with paired data: {stats['n_sites_paired']}",

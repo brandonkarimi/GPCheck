@@ -47,5 +47,5 @@ Across the 17 sites with a verdict:
 ## Limits of this run
 
 - Thirty sites is too few for the per-category table or the intervals to mean much.
-- Nothing has been checked by hand. `gpcheck sample` and `gpcheck analyze --manual` are in place for that.
+- Nothing has been checked by hand.
 - The 13 inconclusive sites are not a random subset: large retailers and travel sites are over-represented, so the verdict shares above describe sites without aggressive bot protection.
