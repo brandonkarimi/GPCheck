@@ -1,6 +1,6 @@
 # Results
 
-Do popular US websites honor the Global Privacy Control signal when visited from California? This page reports the 500-site study in aggregate. No site is named: the verdicts are automated and have not yet been verified by hand (see Ethics in [METHODOLOGY.md](METHODOLOGY.md)).
+Do popular US websites honor the Global Privacy Control signal when visited from California? This page reports the 500-site study in aggregate. No site is named: the verdicts are automated and have not been verified by hand (see Ethics in [METHODOLOGY.md](METHODOLOGY.md)).
 
 ## Summary
 
@@ -128,7 +128,7 @@ Ad-funded publishers (news, lifestyle, health) mostly declare an opt-out and red
 
 ## Limitations
 
-- **Not yet validated by hand.** The verdicts are automated. `gpcheck sample` and [MANUAL_CHECK.md](MANUAL_CHECK.md) are in place for a blind manual check, and this page will be updated with the agreement rate.
+- **Not validated by hand.** The verdicts are automated. `gpcheck sample` and [MANUAL_CHECK.md](MANUAL_CHECK.md) support a blind manual check, which was not carried out for this study.
 - **Bot protection removes 27% of the sample, and not at random.** Large retailers and travel sites are over-represented among inconclusive sites, so the shares above describe sites that let an automated browser in.
 - **Only browser-visible behavior is measured.** Server-to-server sharing is invisible, so a clean result is not proof of compliance. A persisting tracker request is also not proof of a sale.
 - **The sample is hand-drawn.** Sites come from a candidate list of well-known US consumer sites ranked by Tranco, not a random draw from the web.
